@@ -1,0 +1,268 @@
+[
+    {
+      "id": "1",
+      "name": "The Mighty Thor",
+      "description": "A powerful Norse god of thunder and lightning.",
+      "gear": "Mjolnir, his enchanted hammer",
+      "category": "Melee",
+      "rating": 5
+    },
+    {
+      "id": "2",
+      "name": "Wonder Woman",
+      "description": "A powerful Amazonian warrior and princess.",
+      "gear": "The Lasso of Truth, her magical lasso",
+      "category": "Melee",
+      "rating": 5
+    },
+    {
+      "id": "3",
+      "name": "Captain America",
+      "description": "A super-soldier with superhuman strength and durability.",
+      "gear": "His indestructible shield",
+      "category": "Melee",
+      "rating": 4.5
+    },
+    {
+      "id": "498",
+      "name": "The Invisible Woman",
+      "description": "A member of the Fantastic Four with the ability to turn invisible and generate force fields.",
+      "gear": "Her invisible force fields",
+      "category": "Ranged",
+      "rating": 4
+    },
+    {
+      "id": "499",
+      "name": "The Thing",
+      "description": "A member of the Fantastic Four with superhuman strength and durability.",
+      "gear": "His rocky skin",
+      "category": "Melee",
+      "rating": 4
+    },
+    {
+      "id": "500",
+      "name": "Human Torch",
+      "description": "A member of the Fantastic Four with the ability to fly and generate fire.",
+      "gear": "His fiery powers",
+      "category": "Ranged",
+      "rating": 4
+    },
+    {
+        "id": "501",
+        "name": "The Scarlet Witch",
+        "description": "A powerful mutant with the ability to manipulate reality.",
+        "gear": "Her chaos magic",
+        "category": "Ranged",
+        "rating": 5
+      },
+      {
+        "id": "502",
+        "name": "Doctor Strange",
+        "description": "A powerful sorcerer who protects the Earth from mystical threats.",
+        "gear": "The Eye of Agamotto and the Cloak of Levitation",
+        "category": "Ranged",
+        "rating": 5
+      },
+      {
+        "id": "503",
+        "name": "Spider-Man",
+        "description": "A teenage superhero with superhuman strength, agility, and the ability to cling to walls.",
+        "gear": "His web-shooters and spider-sense",
+        "category": "Melee",
+        "rating": 4.5
+      },
+      {
+        "id": "597",
+        "name": "The Flash",
+        "description": "A superhero with the ability to move at superhuman speeds.",
+        "gear": "His lightning-fast reflexes",
+        "category": "Speedster",
+        "rating": 4
+      },
+      {
+        "id": "598",
+        "name": "Aquaman",
+        "description": "The king of Atlantis with superhuman strength and the ability to communicate with sea creatures.",
+        "gear": "His trident and Atlantean armor",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "599",
+        "name": "Green Lantern",
+        "description": "A member of the Green Lantern Corps with the ability to create constructs out of light.",
+        "gear": "His power ring",
+        "category": "Ranged",
+        "rating": 4
+      },
+      {
+        "id": "600",
+        "name": "Batman",
+        "description": "A wealthy philanthropist who fights crime as a vigilante.",
+        "gear": "His high-tech gadgets and martial arts skills",
+        "category": "Melee",
+        "rating": 5
+      },
+      {
+        "id": "601",
+        "name": "The Incredible Hulk",
+        "description": "A powerful mutant with superhuman strength and durability.",
+        "gear": "His massive muscles and rage",
+        "category": "Melee",
+        "rating": 5
+      },
+      {
+        "id": "602",
+        "name": "Iron Man",
+        "description": "A genius billionaire playboy philanthropist with a high-tech suit of armor.",
+        "gear": "His Iron Man suit",
+        "category": "Ranged",
+        "rating": 5
+      },
+      {
+        "id": "603",
+        "name": "Captain Marvel",
+        "description": "A powerful Kree warrior with superhuman strength, speed, and flight.",
+        "gear": "Her Kree powers and binary energy blasts",
+        "category": "Ranged",
+        "rating": 5
+      },
+
+      {
+        "id": "619",
+        "name": "Ant-Man",
+        "description": "A superhero with the ability to shrink to the size of an ant and control ants.",
+        "gear": "His Ant-Man suit",
+        "category": "Ranged",
+        "rating": 3.5
+      },
+      {
+        "id": "620",
+        "name": "The Wasp",
+        "description": "A superhero with the ability to shrink to the size of a wasp and fly.",
+        "gear": "Her Wasp suit",
+        "category": "Ranged",
+        "rating": 3.5
+      },
+      {
+        "id": "621",
+        "name": "The Vision",
+        "description": "A powerful android with superhuman strength, durability, and flight.",
+        "gear": "His density manipulation and solar beam abilities",
+        "category": "Ranged",
+        "rating": 4.5
+      },
+      {
+        "id": "622",
+        "name": "Winter Soldier",
+        "description": "A highly skilled assassin with a cybernetic arm.",
+        "gear": "His cybernetic arm and martial arts skills",
+        "category": "Melee",
+        "rating": 4.5
+      },
+      {
+        "id": "623",
+        "name": "Black Widow",
+        "description": "A highly skilled assassin and spy.",
+        "gear": "Her martial arts skills and Widow's Bites",
+        "category": "Melee",
+        "rating": 4.5
+      },
+     
+      {
+        "id": "649",
+        "name": "Hawkeye",
+        "description": "A skilled archer with superhuman accuracy.",
+        "gear": "His bow and arrows",
+        "category": "Ranged",
+        "rating": 4
+      },
+      {
+        "id": "650",
+        "name": "Iron Fist",
+        "description": "A skilled martial artist with the ability to channel his chi into his fists.",
+        "gear": "His martial arts skills and chi-enhanced fists",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "651",
+        "name": "Luke Cage",
+        "description": "A superhero with superhuman strength and durability.",
+        "gear": "His unbreakable skin",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "652",
+        "name": "Jessica Jones",
+        "description": "A private investigator with superhuman strength and flight.",
+        "gear": "Her superhuman strength and flight",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "653",
+        "name": "Daredevil",
+        "description": "A blind vigilante with heightened senses and martial arts skills.",
+        "gear": "His billy clubs and heightened senses",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "654",
+        "name": "The Punisher",
+        "description": "A vigilante who uses deadly force to fight crime.",
+        "gear": "His arsenal of weapons and martial arts skills",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "655",
+        "name": "Ghost Rider",
+        "description": "A vigilante with the power to transform into a flaming skeleton.",
+        "gear": "His demonic powers and hellfire chain",
+        "category": "Ranged",
+        "rating": 4
+      },
+      {
+        "id": "656",
+        "name": "Blade",
+        "description": "A half-human, half-vampire vampire hunter.",
+        "gear": "His sword and martial arts skills",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "657",
+        "name": "Morbius, the Living Vampire",
+        "description": "A living vampire with superhuman strength, speed, and healing.",
+        "gear": "His vampiric abilities",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "658",
+        "name": "Venom",
+        "description": "A human bonded to an alien symbiote with superhuman strength, speed, and durability.",
+        "gear": "His symbiote suit and spider-like abilities",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "659",
+        "name": "Deadpool",
+        "description": "A mercenary with superhuman healing and a regenerative factor.",
+        "gear": "His swords and guns",
+        "category": "Melee",
+        "rating": 4
+      },
+      {
+        "id": "660",
+        "name": "Wolverine",
+        "description": "A mutant with superhuman strength, speed, agility, and healing.",
+        "gear": "His adamantium claws and skeleton",
+        "category": "Melee",
+        "rating": 5
+      }
+    ]
