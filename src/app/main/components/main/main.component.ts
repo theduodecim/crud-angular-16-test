@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Hero } from '../../interfaces/hero.interface';
-import { HeroService } from '../../services/hero.service';
+import { MainService } from '../../services/main.service';
 import * as FileSaver from 'file-saver';
 
 import { Column, ExportColumn } from '../../interfaces/export-column.interface';
@@ -16,36 +16,40 @@ import { NewHeroDialogComponent } from 'src/app/main/reusable-fragments/new-hero
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css'],
-  providers: [HeroService,MessageService, ConfirmationService, DialogService]
+  providers: [MainService,MessageService, ConfirmationService, DialogService]
 })
 export class MainComponent implements OnInit{
-
-
     arr_heros!: Hero[];
-   
-
     hero!: Hero;
-
     selectedHeros!: Hero[] | null;
-
     submitted: boolean = false;
-
-    statuses!: any[];
-
-    cols!: Column[];
-
+  
     exportColumns!: ExportColumn[];
     dinamicDialogRef: DynamicDialogRef | undefined;
-  
+    cols: Column[] = [
+      { field: 'Name', header: 'Name'},
+      { field: 'Description', header: 'Description' },
+      { field: 'Gear', header: 'Gear' },
+      { field: 'Category', header: 'Category' },
+      { field: 'Rating', header: 'Rating' }
+    ];
+    loadingHeroTable = false;
     constructor(
-      private HeroService: HeroService, 
+      private mainService: MainService, 
       private messageService: MessageService,
       private confirmationService: ConfirmationService,
       public dialogService: DialogService
       ) {}
 
 ngOnInit(): void {
-  this.HeroService.getHeroData().subscribe((res: any) => {
+
+  this.onGetHeros();
+  this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+}
+
+onGetHeros() {
+  this.loadingHeroTable = true;
+  this.mainService.getHeroData().subscribe((res: any) => {
     console.log(res);
     var arr_temp = [];
     if(res) {
@@ -53,16 +57,10 @@ ngOnInit(): void {
         arr_temp.push(hero);
       }
       this.arr_heros = arr_temp;
+    
     }
+    this.loadingHeroTable = false;
   });
-  this.cols = [
-    { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
-    { field: 'name', header: 'Name' },
-    { field: 'category', header: 'Category' },
-    { field: 'quantity', header: 'Quantity' }
-  ];
-
-  this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
 }
 
 
@@ -107,17 +105,10 @@ createId(): string {
 
 
 
-getSeverity(status: string) {
-  /*
-  switch (status) {
-      case 'INSTOCK':
-          return 'success';
-      case 'LOWSTOCK':
-          return 'warning';
-      case 'OUTOFSTOCK':
-          return 'danger';
-  }
-  */
+onGetSeverity(status: string) {
+
+return this.mainService.getSeverity(status);
+ 
 }
 
 

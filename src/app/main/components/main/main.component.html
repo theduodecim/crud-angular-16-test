@@ -15,22 +15,23 @@
         <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
         <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
         -->
-       <!-- <button type="button" pButton pRipple icon="pi pi-file" (click)="dt.exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button> -->
+       <!-- <button type="button" pButton pRipple icon="pi pi-file" (click)="heroTableEl.exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button> -->
         <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
         <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
-       <!--<button type="button" pButton pRipple icon="pi pi-filter" (click)="dt.exportCSV({ selectionOnly: true })" class="p-button-info ml-auto" pTooltip="Selection Only" tooltipPosition="bottom"></button> -->
+       <!--<button type="button" pButton pRipple icon="pi pi-filter" (click)="heroTableEl.exportCSV({ selectionOnly: true })" class="p-button-info ml-auto" pTooltip="Selection Only" tooltipPosition="bottom"></button> -->
   
     </ng-template>
 </p-toolbar>
 
 
 <p-table
+    [loading]="loadingHeroTable"
     [scrollable]="true" 
     scrollHeight="400px"
     [resizableColumns]="true" 
     columnResizeMode="expand"
     [tableStyle]="{'min-width': '50rem'}"
-    #dt
+    #heroTableEl
     styleClass="p-datatable-sm "
     [value]="arr_heros"
     [rows]="25"
@@ -48,7 +49,7 @@
             <h5 class="m-0">Search</h5>
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains', dt)" placeholder="Search..." /> 
+              <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains', heroTableEl)" placeholder="Search..." /> 
             </span>
         </div>
     </ng-template>
@@ -57,12 +58,12 @@
             <th style="width: 4rem">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
-            <th pResizableColumn pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pResizableColumn pSortableColumn="this.cols[0].field" style="min-width:15rem">{{this.cols[0].header}} <p-sortIcon [field]="this.cols[0].field"></p-sortIcon></th>
           <!--  <th>Image</th> -->
-            <th pResizableColumn pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-            <th pResizableColumn pSortableColumn="category" style="min-width:10rem">Category <p-sortIcon field="category"></p-sortIcon></th>
-            <th pResizableColumn pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
-            <th pResizableColumn pSortableColumn="inventoryStatus" style="min-width:10rem">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+            <th pResizableColumn pSortableColumn="this.cols[1].field">{{this.cols[1].header}} <p-sortIcon [field]="this.cols[1].field"></p-sortIcon></th>
+            <th pResizableColumn pSortableColumn="this.cols[2].field" style="min-width:10rem">{{this.cols[2].header}} <p-sortIcon [field]="this.cols[2].field"></p-sortIcon></th>
+            <th pResizableColumn pSortableColumn="this.cols[3].field">{{this.cols[3].header}} <p-sortIcon [field]="this.cols[3].field"></p-sortIcon></th>
+            <th pResizableColumn pSortableColumn="this.cols[4].field" style="min-width:10rem">{{this.cols[4].header}} <p-sortIcon [field]="this.cols[4].field"></p-sortIcon></th>
             <th></th>
         </tr>
     </ng-template>
@@ -72,15 +73,17 @@
                 <p-tableCheckbox [value]="hero"></p-tableCheckbox>
             </td>
             <td>{{ hero.name }}</td>
-           <!-- <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/hero/' + hero.image" [alt]="hero.name" width="50" class="shadow-4" /></td>-->
-            <td>{{ hero.price | currency: 'USD' }}</td>
-            <td>{{ hero.category }}</td>
-          <!--  <td><p-rating [ngModel]="hero.rating" [readonly]="true" [cancel]="false"></p-rating></td>-->
+            <td>{{ hero.description }}</td>
+            <td>{{ hero.gear }}</td>
             <td>
-             <!--   <p-tag [value]="hero.inventoryStatus" [severity]="getSeverity(hero.inventoryStatus)"></p-tag> -->
+                <p-tag [value]="hero.category" [severity]="onGetSeverity(hero.category)"></p-tag>
             </td>
             <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editHero(hero)"></button>
+                <p-rating [ngModel]="hero.rating" [readonly]="true" [cancel]="false"></p-rating>
+            </td>
+          
+            <td>
+                <button  style="width: 1.5rem; height: 1.5rem;" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success " (click)="editHero(hero)"></button>
               <!--  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="editHero(hero)"></button> -->
             </td>
         </tr>

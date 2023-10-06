@@ -18,6 +18,7 @@ import { RatingModule } from 'primeng/rating';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [
    
@@ -40,7 +41,8 @@ import { CardModule } from 'primeng/card';
     RatingModule,
     TagModule,
     ToastModule,
-    CardModule
+    CardModule,
+    DropdownModule
   ],
   exports: [
     BrowserModule,
@@ -59,7 +61,8 @@ import { CardModule } from 'primeng/card';
     RatingModule,
     TagModule,
     ToastModule,
-    CardModule
+    CardModule,
+    DropdownModule
   ]
 })
 export class PrimeNGModule { }

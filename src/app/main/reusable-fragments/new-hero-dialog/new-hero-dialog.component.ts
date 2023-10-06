@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Hero } from '../../interfaces/hero.interface';
 
@@ -11,13 +12,36 @@ export class NewHeroDialogComponent implements OnInit {
   Heros!: Hero[];
   hero!: Hero;
   submitted: boolean = false;
+  heroForm!:FormGroup;
+  statuses: any[] = [
+    "success", 
+    "info",
+    "warning",
+    "danger"
+   
+  ];
   constructor(private messageService: MessageService) {
     
   }
 
   ngOnInit(): void {
-    
+      this.createForm();
   }
+  onGetSeverity() {
+  
+  }
+
+  createForm() {
+    this.heroForm = new FormGroup({
+      id: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      gear: new FormControl('',),
+      category:  new FormControl('', ),
+      rating:  new FormControl('', ),
+    });
+  }
+
   createId(): string {
     let id = '';
     var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

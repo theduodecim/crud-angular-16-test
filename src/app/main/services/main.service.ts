@@ -3,9 +3,23 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Hero} from '../interfaces/hero.interface'
 @Injectable()
-export class HeroService {
+export class MainService {
 
     constructor(public httpClient: HttpClient) {}
+
+    getSeverity(status: string) {
+        switch (status) {
+            case 'Melee':
+                return 'success';
+            case 'Ranged':
+                return 'warning';
+            case 'Speedster':
+                return 'danger';
+           default:
+              return 'info'  
+        }
+      }
+
 
     getHeroData(): Observable<Hero> {
         return this.httpClient.get('assets/data/heros-data.json');

@@ -13,7 +13,7 @@ import { NewHeroDialogComponent } from './reusable-fragments/new-hero-dialog/new
 @NgModule({
   declarations: [
     MainComponent,
-   NewHeroDialogComponent
+    NewHeroDialogComponent
   ],
   imports: [
     CommonModule,
