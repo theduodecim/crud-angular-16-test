@@ -1,12 +1,13 @@
 <p-toast></p-toast>
 
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
 
 
 <p-card header="Manage your Heros">
   
 <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
-        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openEditNewHeroDialog()"></button>
         <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedHeros()" [disabled]="!selectedHeros|| !selectedHeros.length"></button>
     </ng-template>
 
@@ -17,7 +18,7 @@
         -->
        <!-- <button type="button" pButton pRipple icon="pi pi-file" (click)="heroTableEl.exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button> -->
         <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
-        <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+      <!--  <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button> -->
        <!--<button type="button" pButton pRipple icon="pi pi-filter" (click)="heroTableEl.exportCSV({ selectionOnly: true })" class="p-button-info ml-auto" pTooltip="Selection Only" tooltipPosition="bottom"></button> -->
   
     </ng-template>
@@ -27,10 +28,10 @@
 <p-table
     [loading]="loadingHeroTable"
     [scrollable]="true" 
-    scrollHeight="400px"
+    scrollHeight="500px"
     [resizableColumns]="true" 
     columnResizeMode="expand"
-    [tableStyle]="{'min-width': '50rem'}"
+    [tableStyle]="{'min-width': '60rem'}"
     #heroTableEl
     styleClass="p-datatable-sm "
     [value]="arr_heros"
@@ -83,7 +84,7 @@
             </td>
           
             <td>
-                <button  style="width: 1.5rem; height: 1.5rem;" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success " (click)="editHero(hero)"></button>
+                <button  style="width: 2rem; height: 2rem;" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success " (click)="openEditNewHeroDialog(hero)"></button>
               <!--  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="editHero(hero)"></button> -->
             </td>
         </tr>

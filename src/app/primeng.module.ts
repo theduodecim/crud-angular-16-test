@@ -19,6 +19,7 @@ import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [
    
@@ -42,7 +43,8 @@ import { DropdownModule } from 'primeng/dropdown';
     TagModule,
     ToastModule,
     CardModule,
-    DropdownModule
+    DropdownModule,
+    ConfirmDialogModule
   ],
   exports: [
     BrowserModule,
@@ -62,7 +64,8 @@ import { DropdownModule } from 'primeng/dropdown';
     TagModule,
     ToastModule,
     CardModule,
-    DropdownModule
+    DropdownModule,
+    ConfirmDialogModule
   ]
 })
 export class PrimeNGModule { }

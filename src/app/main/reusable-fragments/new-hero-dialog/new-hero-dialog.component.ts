@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Hero } from '../../interfaces/hero.interface';
+import { MainService } from '../../services/main.service';
 
 @Component({
   selector: 'app-new-hero-dialog',
@@ -18,29 +20,83 @@ export class NewHeroDialogComponent implements OnInit {
     "info",
     "warning",
     "danger"
-   
   ];
-  constructor(private messageService: MessageService) {
+
+  arr_category_options: any[] = [
+    {id: 1, label: "Melee"},
+    {id: 2, label: "Speedster"},
+    {id: 3, label: "Ranged"},
+    {id: 4, label: "Caster"},
+    {id: 5, label: "Other"}
+  ];
+
+  selCategory:any = {id: 5, label: "Other"}
+  testBind!:any;
+  mode: string = 'new hero';
+  constructor(
+    private messageService: MessageService, 
+    public mainService: MainService, 
+    public dynamicDialogRef: DynamicDialogRef,
+    public dialogConfig: DynamicDialogConfig
+    ) {
     
   }
 
   ngOnInit(): void {
       this.createForm();
-  }
-  onGetSeverity() {
-  
+      console.log(this.dialogConfig.data);
+      if(this.dialogConfig.data.mode == 'edit hero') {
+        this.mode = this.dialogConfig.data.mode;
+        this.loadHeroData(this.dialogConfig.data.hero);
+      }
   }
 
   createForm() {
     this.heroForm = new FormGroup({
-      id: new FormControl('', [Validators.required]),
+      id: new FormControl(''),
       name: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-      gear: new FormControl('',),
-      category:  new FormControl('', ),
-      rating:  new FormControl('', ),
+      gear: new FormControl(''),
+      category:  new FormControl('', [Validators.required]),
+      rating:  new FormControl('', [Validators.required] )
     });
   }
+
+  loadHeroData(hero: Hero) {
+    this.heroForm.controls['id'].patchValue(hero?.id);
+    this.heroForm.controls['name'].patchValue(hero?.name);
+    this.heroForm.controls['description'].patchValue(hero?.description);
+    this.heroForm.controls['gear'].patchValue(hero?.gear);
+    this.heroForm.controls['category'].patchValue(hero?.category);
+    var categoryFound = this.arr_category_options.find(f => f.label == hero?.category)
+    this.selCategory = categoryFound;
+    this.heroForm.controls['rating'].patchValue(hero?.rating);
+  }
+
+
+  onSaveNewHero() {
+    if(this.mode == 'edit hero') {
+      console.log(this.dialogConfig.data)
+      this.dynamicDialogRef.close({mode: 'edit hero', hero: this.heroForm.value});
+    }else {
+      const newId = this.createId();
+      this.heroForm.controls['id'].patchValue(newId);
+      this.dynamicDialogRef.close({mode: 'new hero', hero: this.heroForm.value});
+    }
+ 
+  }
+ 
+  onGetSeverity(status: string) {
+      return this.mainService.getSeverity(status);
+  }
+
+  onChangeCategory(event: any) {
+        console.log(event.value);
+        this.selCategory = event.value;
+        this.heroForm.controls['category'].patchValue(this.selCategory?.label);
+  }
+
+
 
   createId(): string {
     let id = '';
@@ -51,37 +107,6 @@ export class NewHeroDialogComponent implements OnInit {
     return id;
   }
   
-
-  findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.Heros.length; i++) {
-        if (this.Heros[i].id === id) {
-            index = i;
-            break;
-        }
-    }
-  
-    return index;
-  }
-
-  saveHero() {
-    this.submitted = true;
-  
-    if (this.hero.name?.trim()) {
-        if (this.hero.id) {
-            this.Heros[this.findIndexById(this.hero.id)] = this.hero;
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Hero Updated', life: 3000 });
-        } else {
-            this.hero.id = this.createId();
-          //  this.Hero.image = 'Hero-placeholder.svg';
-            this.Heros.push(this.hero);
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Hero Created', life: 3000 });
-        }
-  
-        this.Heros = [...this.Heros];
-      
-        this.hero = {};
-    }
-  }
+ 
 
 }

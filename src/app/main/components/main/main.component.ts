@@ -1,5 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
+import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Hero } from '../../interfaces/hero.interface';
 import { MainService } from '../../services/main.service';
@@ -70,21 +72,47 @@ show() {
       */
 }
 
-openNew() {
+openEditNewHeroDialog(hero?:Hero) {
   this.hero = {};
   this.submitted = false;
   console.error('checkear esto');
   this.dinamicDialogRef = this.dialogService.open(NewHeroDialogComponent, {
+    height: '70vh',
+    maximizable: true,
     data: {
-         id: '51gF3'
+         hero: hero,
+         mode: hero?.id ? 'edit hero' : 'new hero'
      },
-       header: 'Create a new Hero'
+       header: hero?.id ? 'Edit Hero' : 'Create a new Hero'
      });
 
+     this.dinamicDialogRef.onClose.subscribe((data: any) => {
+      if (data.mode == 'new hero') {
+          this.messageService.add({ severity: 'success', summary: 'Ok', detail: 'Hero ' + data.hero.name + ' Saved'});
+          //this.addHero(hero);
+      }else {
+          console.log(data.hero);
+          this.updateHero(data.hero);
+      } 
+  });
 
 //  this.HeroDialog = true;
 }
 
+addHero() {
+
+}
+
+
+updateHero(hero:Hero) {
+  const index = this.arr_heros.findIndex(f => f.id === hero.id);
+    if(index) {
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Hero Updated', life: 3000 });
+      console.log(index);
+      this.arr_heros[index] = hero;
+    }
+    console.log(this.arr_heros);
+}
 
 
 
@@ -113,6 +141,7 @@ return this.mainService.getSeverity(status);
 
 
 deleteSelectedHeros() {
+  console.error('delete heros');
   this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected Heros?',
       header: 'Confirm',
@@ -140,18 +169,20 @@ deleteHero(Hero: Hero) {
 
 
 
-
+/*
 exportPdf() {
   var currentDate = moment().format('DD-MM-YYYY');
-  import('jspdf').then((jsPDF) => {
-      import('jspdf-autotable').then((x) => {
-          const doc = new jsPDF.default('p', 'px', 'a4');
-          (doc as any).autoTable(this.exportColumns, this.arr_heros);
-
-          doc.save('heros-' + currentDate + '.pdf');
-      });
-  });
+  this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
+  const doc = new jsPDF('portrait', 'px', 'a4');
+    var temparr:any = [];   
+  this.arr_heros.map(m => {
+          temparr.push(m);
+    })
+    console.log(temparr);
+  autoTable(doc, {columns: this.exportColumns , body: temparr });
+  doc.save('products.pdf');
 }
+*/
 
 exportExcel() {
   
