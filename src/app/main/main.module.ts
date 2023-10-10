@@ -10,6 +10,7 @@ import { NewHeroDialogComponent } from './reusable-fragments/new-hero-dialog/new
 
 
 
+
 @NgModule({
   declarations: [
     MainComponent,
@@ -20,6 +21,7 @@ import { NewHeroDialogComponent } from './reusable-fragments/new-hero-dialog/new
     PrimeNGModule,
     FormsModule,
     ReactiveFormsModule,
+   
   ]
 })
 export class MainModule { }

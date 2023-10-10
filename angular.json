@@ -13,6 +13,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "moment",
+              "file-saver"
+           ],
             "outputPath": "dist/proyecto-angular-mindata",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -61,6 +65,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          
           "configurations": {
             "production": {
               "browserTarget": "proyecto-angular-mindata:build:production"

@@ -5,9 +5,12 @@
     <form [formGroup]="heroForm">
 
         <div class="field mt-2">
+
+            
             <span class="p-float-label">
-                <input class="p-inputtext-sm" pInputText id="username" formControlName="name" />
-                <label htmlFor="username">Hero Name *</label>
+                <p-autoComplete [ngModelOptions]="{standalone: true}" [(ngModel)]="selAutoComplete" (onSelect)="onSelectAutoCompleteHero($event)"  [forceSelection]="true" [suggestions]="arr_autoCompleteOpt" (completeMethod)="onAutocompleteChange($event)" field="name"></p-autoComplete>
+                <!--    <input class="p-inputtext-sm" pInputText id="username" formControlName="name" /> -->
+               <label htmlFor="username"><i class="pi pi-search" ></i>  Hero Name  *</label> 
             </span>
         
         </div>
@@ -42,7 +45,7 @@
         </div>
 
 
-        <h4>Hero Stars <i class="pi pi-star-fill"></i> </h4>
+        <h4>Hero Stars <i style="color: #3B82F6" class="pi pi-star-fill"></i> </h4>
 
         <div class="formgrid grid">
             <div class="field-radiobutton col-4 col-sm-6">

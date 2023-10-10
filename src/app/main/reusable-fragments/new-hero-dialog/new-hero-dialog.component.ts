@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Hero } from '../../interfaces/hero.interface';
 import { MainService } from '../../services/main.service';
@@ -30,9 +31,13 @@ export class NewHeroDialogComponent implements OnInit {
     {id: 5, label: "Other"}
   ];
 
-  selCategory:any = {id: 5, label: "Other"}
+  selCategory:any = {id: 1, label: "Melee"}
   testBind!:any;
   mode: string = 'new hero';
+  selAutoComplete!: any;
+  arr_autoCompleteOpt: any[] = [];
+  arr_heros!: Hero[];
+ 
   constructor(
     private messageService: MessageService, 
     public mainService: MainService, 
@@ -44,12 +49,60 @@ export class NewHeroDialogComponent implements OnInit {
 
   ngOnInit(): void {
       this.createForm();
-      console.log(this.dialogConfig.data);
+      
       if(this.dialogConfig.data.mode == 'edit hero') {
         this.mode = this.dialogConfig.data.mode;
         this.loadHeroData(this.dialogConfig.data.hero);
       }
+      console.log(this.dialogConfig.data.villans);
+      this.onGetHeros(this.dialogConfig.data.villans);
   }
+
+  onGetHeros(mode?: string) {
+    console.error('calling get heros ?')
+    this.mainService.getHeroData(mode).subscribe((res: any) => {
+      
+      var arr_temp = [];
+      if(res) {
+        for(let hero of res) {
+          arr_temp.push(hero);
+        }
+        this.arr_heros = arr_temp;
+      
+      }
+    });
+  }
+
+
+  onAutocompleteChange(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+    
+    
+    for (let i = 0; i < (this.arr_heros as Hero[]).length; i++) {
+      let hero = (this.arr_heros as Hero[])[i];
+      const hasSymbols = /[-!@#$%^&*()]/.test(hero.name!);
+    
+    //  
+      if(hasSymbols) {
+       var outputText = hero?.name!.replace(/-/g, " ");
+        //
+        
+        
+        if (outputText?.toUpperCase().includes(query.toUpperCase())) filtered.push(hero);
+      }else {
+          if (hero.name?.toUpperCase().includes(query.toUpperCase())) filtered.push(hero);
+      }
+       
+  }
+    this.arr_autoCompleteOpt = filtered;
+}
+  onSelectAutoCompleteHero(event:any) {
+      var name = event.name;
+      this.heroForm.controls['name'].patchValue(name);
+  }
+
+
 
   createForm() {
     this.heroForm = new FormGroup({
@@ -57,7 +110,7 @@ export class NewHeroDialogComponent implements OnInit {
       name: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       gear: new FormControl(''),
-      category:  new FormControl('', [Validators.required]),
+      category:  new FormControl('Melee', [Validators.required]),
       rating:  new FormControl('', [Validators.required] )
     });
   }
@@ -65,18 +118,21 @@ export class NewHeroDialogComponent implements OnInit {
   loadHeroData(hero: Hero) {
     this.heroForm.controls['id'].patchValue(hero?.id);
     this.heroForm.controls['name'].patchValue(hero?.name);
+    this.selAutoComplete = hero;
+    
     this.heroForm.controls['description'].patchValue(hero?.description);
     this.heroForm.controls['gear'].patchValue(hero?.gear);
     this.heroForm.controls['category'].patchValue(hero?.category);
     var categoryFound = this.arr_category_options.find(f => f.label == hero?.category)
     this.selCategory = categoryFound;
     this.heroForm.controls['rating'].patchValue(hero?.rating);
+   
   }
 
 
   onSaveNewHero() {
     if(this.mode == 'edit hero') {
-      console.log(this.dialogConfig.data)
+      
       this.dynamicDialogRef.close({mode: 'edit hero', hero: this.heroForm.value});
     }else {
       const newId = this.createId();
@@ -91,7 +147,7 @@ export class NewHeroDialogComponent implements OnInit {
   }
 
   onChangeCategory(event: any) {
-        console.log(event.value);
+        
         this.selCategory = event.value;
         this.heroForm.controls['category'].patchValue(this.selCategory?.label);
   }

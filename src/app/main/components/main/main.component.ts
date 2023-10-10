@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, effect, OnInit, signal } from '@angular/core';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -29,29 +29,58 @@ export class MainComponent implements OnInit{
     exportColumns!: ExportColumn[];
     dinamicDialogRef: DynamicDialogRef | undefined;
     cols: Column[] = [
-      { field: 'Name', header: 'Name'},
-      { field: 'Description', header: 'Description' },
-      { field: 'Gear', header: 'Gear' },
-      { field: 'Category', header: 'Category' },
-      { field: 'Rating', header: 'Rating' }
+      { field: 'name', header: 'Name'},
+      { field: 'description', header: 'Description' },
+      { field: 'gear', header: 'Gear' },
+      { field: 'category', header: 'Category' },
+      { field: 'rating', header: 'Rating' }
     ];
     loadingHeroTable = false;
+    villansSignal = signal<any>('');
+    villansHerosComputedChange: any;
+    herosVillans: string = 'Heros';
     constructor(
       private mainService: MainService, 
       private messageService: MessageService,
       private confirmationService: ConfirmationService,
       public dialogService: DialogService
-      ) {}
+      ) {
+        this.villansHerosComputedChange = computed(() => this.villansSignal());
+        effect(() => {
+          if(this.villansHerosComputedChange() == 'Heros') {
+            this.onGetHeros('villans');  
+          }else {
+            this.onGetHeros();  
+          }
+        });
+      }
 
 ngOnInit(): void {
-
+  // this.slidersSignal.set(true);
   this.onGetHeros();
   this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+  this.mainService.getHerosById(1).subscribe(res => {
+    console.log(res);
+  });
+
+  this.mainService.getHeroData().subscribe((res) => {
+        console.log(res);
+  });
+
 }
 
-onGetHeros() {
+onGetVillans(mode:string) {
+  this.villansSignal.set(mode);
+}
+
+onGetHeros(mode?:string) {
+  this.arr_heros = [];
   this.loadingHeroTable = true;
-  this.mainService.getHeroData().subscribe((res: any) => {
+  this.herosVillans = mode == 'villans' ? this.herosVillans = 'Villans' : this.herosVillans = 'Heros';
+  
+  
+  this.mainService.getHeroData(mode).subscribe((res: any) => {
     console.log(res);
     var arr_temp = [];
     if(res) {
@@ -63,55 +92,57 @@ onGetHeros() {
     }
     this.loadingHeroTable = false;
   });
+
+
+  
 }
 
-
-show() {
-  /*
-
-      */
-}
 
 openEditNewHeroDialog(hero?:Hero) {
   this.hero = {};
   this.submitted = false;
-  console.error('checkear esto');
+
   this.dinamicDialogRef = this.dialogService.open(NewHeroDialogComponent, {
     height: '70vh',
-    maximizable: true,
+    maximizable: false,
     data: {
          hero: hero,
-         mode: hero?.id ? 'edit hero' : 'new hero'
+         mode: hero?.id ? 'edit hero' : 'new hero',
+         villans: this.herosVillans.toLowerCase()
      },
-       header: hero?.id ? 'Edit Hero' : 'Create a new Hero'
+       header: hero?.id ? 'Edit ' + this.herosVillans.slice(0, -1) : 'Create a new ' + this.herosVillans.slice(0, -1)
      });
 
      this.dinamicDialogRef.onClose.subscribe((data: any) => {
-      if (data.mode == 'new hero') {
-          this.messageService.add({ severity: 'success', summary: 'Ok', detail: 'Hero ' + data.hero.name + ' Saved'});
-          //this.addHero(hero);
+      if(typeof data?.hero !== 'undefined') {
+        if (data?.mode == 'new hero') {
+          this.messageService.add({ severity: 'success', summary: 'Ok', detail: this.herosVillans.slice(0, -1) + ' ' + data.hero.name + ' Saved'});
+          this.addHero(data?.hero);
       }else {
-          console.log(data.hero);
+          
           this.updateHero(data.hero);
       } 
+   }
+     
   });
 
 //  this.HeroDialog = true;
 }
 
-addHero() {
-
+addHero(hero:Hero) {
+  this.arr_heros.unshift(hero);
 }
 
 
 updateHero(hero:Hero) {
+ 
   const index = this.arr_heros.findIndex(f => f.id === hero.id);
-    if(index) {
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Hero Updated', life: 3000 });
-      console.log(index);
+    
+    if(index !== -1) {
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1) +' Updated', life: 3000 });
       this.arr_heros[index] = hero;
     }
-    console.log(this.arr_heros);
+    
 }
 
 
@@ -141,15 +172,15 @@ return this.mainService.getSeverity(status);
 
 
 deleteSelectedHeros() {
-  console.error('delete heros');
+  
   this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected Heros?',
+      message: 'Are you sure you want to delete the selected ' +this.herosVillans+ '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
           this.arr_heros = this.arr_heros.filter((val) => !this.selectedHeros?.includes(val));
           this.selectedHeros = null;
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Heros Deleted', life: 3000 });
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1)+' Deleted', life: 3000 });
       }
   });
 }
@@ -162,7 +193,7 @@ deleteHero(Hero: Hero) {
       accept: () => {
           this.arr_heros = this.arr_heros.filter((val) => val.id !== Hero.id);
           this.hero = {};
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Hero Deleted', life: 3000 });
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail:  this.herosVillans.slice(0, -1) + ' Deleted', life: 3000 });
       }
   });
 }
@@ -178,7 +209,7 @@ exportPdf() {
   this.arr_heros.map(m => {
           temparr.push(m);
     })
-    console.log(temparr);
+    
   autoTable(doc, {columns: this.exportColumns , body: temparr });
   doc.save('products.pdf');
 }

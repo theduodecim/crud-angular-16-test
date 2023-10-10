@@ -1,12 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import {Hero} from '../interfaces/hero.interface'
+import { delay, map, Observable } from 'rxjs';
+import { Hero } from '../interfaces/hero.interface';
 @Injectable()
 export class MainService {
+    baseUrl="/api";
+    enpointHeros="heros";
+    enpointVillans="villans";
+    start: number = 0;
+    end: number = 20;
 
-    constructor(public httpClient: HttpClient) {}
-
+    constructor(private httpClient: HttpClient) {}
     getSeverity(status: string) {
         switch (status) {
             case 'Melee':
@@ -20,29 +24,32 @@ export class MainService {
         }
       }
 
+    getHeroData = (mode?: string):Observable<any> => {
+        if(mode == 'villans') {
+            return this.httpClient.get<Hero[]>(`${this.baseUrl}/${this.enpointVillans}`);
+        }else {
+            return this.httpClient.get<Hero[]>(`${this.baseUrl}/${this.enpointHeros}`);
+        }
+      }
 
-    getHeroData(): Observable<Hero> {
-        return this.httpClient.get('assets/data/heros-data.json');
+    getHerosById =(id:number) => {
+        return this.httpClient.get<Hero[]>(`${this.baseUrl}/${this.enpointHeros}/${id}`, { params: { observe: 'response' } });
+      }
+    setPaginatorStartAndEnd(start:number, end:number) {
+        this.start = start;
+        this.end = end;
     }
 
-
-    getHeroMini() {
-        //return Promise.resolve(this.getHeroData().slice(0, 5));
+    getPaginatorStartAndEnd() {
+        return [this.start, this.end];
     }
 
-    getHeroSmall() {
-        //return Promise.resolve(this.getHeroData().slice(0, 10));
-    }
+   
+    getVillansData(): Observable<any> {
+         return this.httpClient.get('assets/data/villans-data.json').pipe(delay(1500));
+     }
+ 
 
-    getHeros() {
-        return Promise.resolve(this.getHeroData());
-    }
 
-    getHeroWithOrdersSmall() {
-     //   return Promise.resolve(this.getHeroWithOrdersData().slice(0, 10));
-    }
 
-    getHeroWithOrders() {
-      //  return Promise.resolve(this.getHeroWithOrdersData());
-    }
 };
