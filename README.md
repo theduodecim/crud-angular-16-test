@@ -9,18 +9,18 @@
 
 #### Extra Features
 - Utilizing tags with diferent states ( Sucess, Info , Danger , Warning )
-- 		Utilizing xlsx extended feature to export data to **XLSX**
-- 		Able to *Switch Heros to Villans* utilizing **Signals** the new feature of Angular 16
-
+- Utilizing xlsx extended feature to export data to **XLSX**
+- Able to *Switch Heros to Villans* utilizing **Signals** the new feature of Angular 16
+- Including all PrimeNg Table Features (Pagination, Scrolleable, Resiziable Columns, Filtering  & Multiple Selections)
 
 #### Directory Structure
      app/
-            main/
-					/componenents
-					/interfaces
-					/services
-					/reusable-fragments
-					main.module.ts
+        main/
+			/componenents
+			/interfaces
+			/services
+			/reusable-fragments
+			main.module.ts
 ```html
 <!-- Dependencies -->
 "@angular/animations": "^16.0.0",

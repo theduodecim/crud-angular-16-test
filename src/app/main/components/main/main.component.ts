@@ -1,7 +1,5 @@
 
 import { Component, computed, effect, OnInit, signal } from '@angular/core';
-import autoTable from 'jspdf-autotable';
-import jsPDF from 'jspdf';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Hero } from '../../interfaces/hero.interface';
 import { MainService } from '../../services/main.service';
