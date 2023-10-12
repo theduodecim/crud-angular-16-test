@@ -6,10 +6,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Hero } from '../../interfaces/hero.interface';
 import { MainService } from '../../services/main.service';
 import * as FileSaver from 'file-saver';
-
 import { Column, ExportColumn } from '../../interfaces/export-column.interface';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
-//import { NewHeroDialogComponent } from '../../reusable-fragments/new-hero-dialog/new-hero-dialog.component';
 import * as moment from 'moment'; 
 import { Table } from 'primeng/table';
 import { NewHeroDialogComponent } from 'src/app/main/reusable-fragments/new-hero-dialog/new-hero-dialog.component';
@@ -59,15 +57,6 @@ ngOnInit(): void {
   // this.slidersSignal.set(true);
   this.onGetHeros();
   this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
-
-  this.mainService.getHerosById(1).subscribe(res => {
-    console.log(res);
-  });
-
-  this.mainService.getHeroData().subscribe((res) => {
-        console.log(res);
-  });
-
 }
 
 onGetVillans(mode:string) {
@@ -92,12 +81,7 @@ onGetHeros(mode?:string) {
     }
     this.loadingHeroTable = false;
   });
-
-
-  
 }
-
-
 openEditNewHeroDialog(hero?:Hero) {
   this.hero = {};
   this.submitted = false;
@@ -112,65 +96,54 @@ openEditNewHeroDialog(hero?:Hero) {
      },
        header: hero?.id ? 'Edit ' + this.herosVillans.slice(0, -1) : 'Create a new ' + this.herosVillans.slice(0, -1)
      });
-
      this.dinamicDialogRef.onClose.subscribe((data: any) => {
       if(typeof data?.hero !== 'undefined') {
         if (data?.mode == 'new hero') {
-          this.messageService.add({ severity: 'success', summary: 'Ok', detail: this.herosVillans.slice(0, -1) + ' ' + data.hero.name + ' Saved'});
           this.addHero(data?.hero);
       }else {
-          
           this.updateHero(data.hero);
       } 
    }
      
   });
-
-//  this.HeroDialog = true;
 }
-
 addHero(hero:Hero) {
-  this.arr_heros.unshift(hero);
+  this.loadingHeroTable = true;
+  this.mainService.addHero(hero).subscribe({
+    next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Ok', detail: this.herosVillans.slice(0, -1) + ' ' + hero.name + ' Saved'});
+        this.arr_heros.unshift(hero);
+        this.loadingHeroTable = false;
+      },
+    error: (err) => {
+      console.log(err);
+       this.loadingHeroTable = false;
+    }
+  });
+
 }
 
 
 updateHero(hero:Hero) {
- 
+  this.loadingHeroTable = true;
   const index = this.arr_heros.findIndex(f => f.id === hero.id);
-    
     if(index !== -1) {
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1) +' Updated', life: 3000 });
-      this.arr_heros[index] = hero;
+      this.mainService.updateHero(hero!).subscribe({
+        next: () => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1) +' Updated', life: 3000 });
+            this.arr_heros[index] = hero;
+            this.loadingHeroTable = false;
+          },
+        error: (err) => {
+          console.log(err);
+          this.loadingHeroTable = false;
+        }
+      });
     }
-    
 }
-
-
-
-
-editHero(hero: Hero) {
-  this.hero = { ...hero };
-// this.HeroDialog = true;
-}
-
-createId(): string {
-  let id = '';
-  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (var i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return id;
-}
-
-
-
 onGetSeverity(status: string) {
-
-return this.mainService.getSeverity(status);
- 
+    return this.mainService.getSeverity(status);
 }
-
-
 deleteSelectedHeros() {
   
   this.confirmationService.confirm({
@@ -178,26 +151,15 @@ deleteSelectedHeros() {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-          this.arr_heros = this.arr_heros.filter((val) => !this.selectedHeros?.includes(val));
-          this.selectedHeros = null;
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1)+' Deleted', life: 3000 });
+   
+        this.arr_heros = this.arr_heros.filter((val) => !this.selectedHeros?.includes(val));
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1)+' Deleted', life: 3000 });
+        this.selectedHeros = null; 
+         
+
       }
   });
 }
-
-deleteHero(Hero: Hero) {
-  this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + Hero.name + '?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-          this.arr_heros = this.arr_heros.filter((val) => val.id !== Hero.id);
-          this.hero = {};
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail:  this.herosVillans.slice(0, -1) + ' Deleted', life: 3000 });
-      }
-  });
-}
-
 
 
 /*
@@ -216,12 +178,11 @@ exportPdf() {
 */
 
 exportExcel() {
-  
   import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(this.arr_heros);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, 'heros');
+      this.saveAsExcelFile(excelBuffer, this.herosVillans);
   });
 }
 

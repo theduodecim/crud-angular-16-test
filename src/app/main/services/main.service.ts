@@ -32,23 +32,23 @@ export class MainService {
         }
       }
 
-    getHerosById =(id:number) => {
+    getHerosById = (id:number) => {
         return this.httpClient.get<Hero[]>(`${this.baseUrl}/${this.enpointHeros}/${id}`, { params: { observe: 'response' } });
       }
-    setPaginatorStartAndEnd(start:number, end:number) {
-        this.start = start;
-        this.end = end;
-    }
 
-    getPaginatorStartAndEnd() {
-        return [this.start, this.end];
-    }
 
-   
-    getVillansData(): Observable<any> {
-         return this.httpClient.get('assets/data/villans-data.json').pipe(delay(1500));
-     }
- 
+    deleteHero = (arr_hero:any) => {
+        return this.httpClient.delete<any>(`${this.baseUrl}/${this.enpointHeros}`, arr_hero);
+      }
+
+    addHero = (hero:Hero) => {
+        return this.httpClient.post<Hero>(`${this.baseUrl}/${this.enpointHeros}`, hero);
+      }
+
+    updateHero = (hero:Hero) => {
+        return this.httpClient.put<any>(`${this.baseUrl}/${this.enpointHeros}`, hero);
+      }
+
 
 
 

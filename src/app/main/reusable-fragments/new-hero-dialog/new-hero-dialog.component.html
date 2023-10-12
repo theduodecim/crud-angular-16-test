@@ -8,24 +8,23 @@
 
             
             <span class="p-float-label">
-                <p-autoComplete [ngModelOptions]="{standalone: true}" [(ngModel)]="selAutoComplete" (onSelect)="onSelectAutoCompleteHero($event)"  [forceSelection]="true" [suggestions]="arr_autoCompleteOpt" (completeMethod)="onAutocompleteChange($event)" field="name"></p-autoComplete>
+                <p-autoComplete
+                [ngClass]="{'ng-invalid ng-dirty': heroForm.get('name')?.invalid && heroForm.get('name')?.touched}" 
+                [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="selAutoComplete" 
+                (onSelect)="onSelectAutoCompleteHero($event)"  [forceSelection]="true" [suggestions]="arr_autoCompleteOpt" (completeMethod)="onAutocompleteChange($event)" field="name"></p-autoComplete>
                 <!--    <input class="p-inputtext-sm" pInputText id="username" formControlName="name" /> -->
-               <label htmlFor="username"><i class="pi pi-search" ></i>  Hero Name  *</label> 
+               <label htmlFor="username"><i class="pi pi-search" ></i>  Hero Name  <span style="color: red">*</span></label> 
             </span>
         
         </div>
-        <div class="field mt-4">
-            <span class="p-float-label">
-                <input formControlName="gear" class="p-inputtext-sm" pInputText id="username" />
-              <label for="float-input">Gear </label>
-            </span>
-        </div>
+       
 
         
         <div class="field mt-4">
             <span class="p-float-label">
-                    <textarea formControlName="description" id="float-input" rows="3" cols="20" pInputTextarea></textarea>
-              <label for="float-input">Description *</label>
+                    <textarea    [ngClass]="{'ng-invalid ng-dirty': heroForm.get('description')?.invalid && heroForm.get('description')?.touched}"  formControlName="description" id="float-input" rows="3" cols="20" pInputTextarea></textarea>
+              <label for="float-input">Description <span style="color: red">*</span></label>
             </span>
         </div>
        
@@ -40,7 +39,7 @@
                         <p-tag [value]="option.label" [severity]="onGetSeverity(option.label)"></p-tag>
                     </ng-template>
                 </p-dropdown>
-                <label for="float-label">Category *</label>
+                <label for="float-label">Category <span style="color: red">*</span></label>
             </span>
         </div>
 
@@ -70,6 +69,12 @@
                 <label for="rating">5</label>
             </div>
       
+        </div>
+        <div class="field mt-4">
+            <span class="p-float-label">
+                <input   [ngClass]="{'border-red': heroForm.get('gear')?.invalid && heroForm.get('gear')?.touched}"  formControlName="gear" class="p-inputtext-sm" pInputText id="username" />
+              <label for="float-input">Gear </label>
+            </span>
         </div>
   
         <div class="p-dialog-footer p-0">

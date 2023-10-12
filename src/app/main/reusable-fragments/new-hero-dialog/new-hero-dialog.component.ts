@@ -49,7 +49,6 @@ export class NewHeroDialogComponent implements OnInit {
 
   ngOnInit(): void {
       this.createForm();
-      
       if(this.dialogConfig.data.mode == 'edit hero') {
         this.mode = this.dialogConfig.data.mode;
         this.loadHeroData(this.dialogConfig.data.hero);
@@ -59,9 +58,7 @@ export class NewHeroDialogComponent implements OnInit {
   }
 
   onGetHeros(mode?: string) {
-    console.error('calling get heros ?')
     this.mainService.getHeroData(mode).subscribe((res: any) => {
-      
       var arr_temp = [];
       if(res) {
         for(let hero of res) {
@@ -77,21 +74,14 @@ export class NewHeroDialogComponent implements OnInit {
   onAutocompleteChange(event: AutoCompleteCompleteEvent) {
     let filtered: any[] = [];
     let query = event.query;
-    
-    
     for (let i = 0; i < (this.arr_heros as Hero[]).length; i++) {
       let hero = (this.arr_heros as Hero[])[i];
       const hasSymbols = /[-!@#$%^&*()]/.test(hero.name!);
-    
-    //  
       if(hasSymbols) {
        var outputText = hero?.name!.replace(/-/g, " ");
-        //
-        
-        
         if (outputText?.toUpperCase().includes(query.toUpperCase())) filtered.push(hero);
       }else {
-          if (hero.name?.toUpperCase().includes(query.toUpperCase())) filtered.push(hero);
+        if (hero.name?.toUpperCase().includes(query.toUpperCase())) filtered.push(hero);
       }
        
   }
@@ -108,7 +98,7 @@ export class NewHeroDialogComponent implements OnInit {
     this.heroForm = new FormGroup({
       id: new FormControl(''),
       name: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
+      description: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
       gear: new FormControl(''),
       category:  new FormControl('Melee', [Validators.required]),
       rating:  new FormControl('', [Validators.required] )
@@ -132,7 +122,6 @@ export class NewHeroDialogComponent implements OnInit {
 
   onSaveNewHero() {
     if(this.mode == 'edit hero') {
-      
       this.dynamicDialogRef.close({mode: 'edit hero', hero: this.heroForm.value});
     }else {
       const newId = this.createId();

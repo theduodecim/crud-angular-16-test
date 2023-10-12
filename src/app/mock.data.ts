@@ -273,6 +273,9 @@ export class MockHeroVillanData implements InMemoryDbService {
                     "rating": 5
                   }
                  ]
+
+
+//Villans emulated Enpoint
                 const villans: Hero[] = [
                   {
                       "id": "125",
