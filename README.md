@@ -11,7 +11,7 @@
 - Utilizing tags with diferent states ( Sucess, Info , Danger , Warning )
 - Utilizing xlsx extended feature to export data to **XLSX**
 - Able to *Switch Heros to Villans* utilizing **Signals** the new feature of Angular 16
-- Including all PrimeNg Table Features (Pagination, Scrolleable, Resiziable Columns, Filtering  & Multiple Selections)
+- Including all PrimeNg Table Features as (Global Search, Pagination, Scrolleable, Resiziable Columns, Filtering  & Multiple Selections)
 
 #### Directory Structure
      app/
