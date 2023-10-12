@@ -10,32 +10,32 @@
 #### Directory Structure
      app/
             main/
-						/componenents
-						/interfaces
-						/services
-						/reusable-fragments
-						main.module.ts
+					/componenents
+					/interfaces
+					/services
+					/reusable-fragments
+					main.module.ts
 ```html
 <!-- Dependencies -->
-	"@angular/animations": "^16.0.0",
-    "@angular/common": "^16.0.0",
-    "@angular/compiler": "^16.0.0",
-    "@angular/core": "^16.0.0",
-    "@angular/forms": "^16.0.0",
-    "@angular/platform-browser": "^16.0.0",
-    "@angular/platform-browser-dynamic": "^16.0.0",
-    "@angular/router": "^16.0.0",
-    "@angular/service-worker": "^16.2.9",
-    "angular-in-memory-web-api": "^0.16.0",
-    "file-saver": "^2.0.5",
-    "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.6.0",
-    "moment": "^2.29.4",
-    "primeflex": "^3.3.1",
-    "primeicons": "^6.0.1",
-    "primeng": "^16.4.1",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "xlsx": "^0.18.5",
-    "zone.js": "~0.13.0"
+"@angular/animations": "^16.0.0",
+"@angular/common": "^16.0.0",
+"@angular/compiler": "^16.0.0",
+"@angular/core": "^16.0.0",
+"@angular/forms": "^16.0.0",
+"@angular/platform-browser": "^16.0.0",
+"@angular/platform-browser-dynamic": "^16.0.0",
+"@angular/router": "^16.0.0",
+"@angular/service-worker": "^16.2.9",
+"angular-in-memory-web-api": "^0.16.0",
+"file-saver": "^2.0.5",
+"jspdf": "^2.5.1",
+"jspdf-autotable": "^3.6.0",
+"moment": "^2.29.4",
+"primeflex": "^3.3.1",
+"primeicons": "^6.0.1",
+"primeng": "^16.4.1",
+"rxjs": "~7.8.0",
+"tslib": "^2.3.0",
+"xlsx": "^0.18.5",
+"zone.js": "~0.13.0"
 ```
