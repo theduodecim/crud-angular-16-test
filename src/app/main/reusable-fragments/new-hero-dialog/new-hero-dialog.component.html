@@ -1,7 +1,4 @@
-<!-- <p-dialog [(visible)]="heroDialog" [style]="{ width: '450px' }" header="hero Details" [modal]="true" styleClass="p-fluid"> -->
-
-  
- <br>
+<br>
     <form [formGroup]="heroForm">
 
         <div class="field mt-2">
@@ -13,7 +10,6 @@
                 [ngModelOptions]="{standalone: true}"
                 [(ngModel)]="selAutoComplete" 
                 (onSelect)="onSelectAutoCompleteHero($event)"  [forceSelection]="true" [suggestions]="arr_autoCompleteOpt" (completeMethod)="onAutocompleteChange($event)" field="name"></p-autoComplete>
-                <!--    <input class="p-inputtext-sm" pInputText id="username" formControlName="name" /> -->
                <label htmlFor="username"><i class="pi pi-search" ></i>  Hero Name  <span style="color: red">*</span></label> 
             </span>
         

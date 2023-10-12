@@ -7,6 +7,12 @@
 - @angular/service-worker to allow the angular app to work in offline mode and PWA.
 - @angular-in-memory-web-api  to emulate the backend workflow.
 
+#### Extra Features
+- Utilizing tags with diferent states ( Sucess, Info , Danger , Warning )
+- 		Utilizing xlsx extended feature to export data to **XLSX**
+- 		Able to *Switch Heros to Villans* utilizing **Signals** the new feature of Angular 16
+
+
 #### Directory Structure
      app/
             main/
@@ -28,8 +34,6 @@
 "@angular/service-worker": "^16.2.9",
 "angular-in-memory-web-api": "^0.16.0",
 "file-saver": "^2.0.5",
-"jspdf": "^2.5.1",
-"jspdf-autotable": "^3.6.0",
 "moment": "^2.29.4",
 "primeflex": "^3.3.1",
 "primeicons": "^6.0.1",

@@ -161,22 +161,6 @@ deleteSelectedHeros() {
   });
 }
 
-
-/*
-exportPdf() {
-  var currentDate = moment().format('DD-MM-YYYY');
-  this.exportColumns = this.cols.map(col => ({title: col.header, dataKey: col.field}));
-  const doc = new jsPDF('portrait', 'px', 'a4');
-    var temparr:any = [];   
-  this.arr_heros.map(m => {
-          temparr.push(m);
-    })
-    
-  autoTable(doc, {columns: this.exportColumns , body: temparr });
-  doc.save('products.pdf');
-}
-*/
-
 exportExcel() {
   import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(this.arr_heros);

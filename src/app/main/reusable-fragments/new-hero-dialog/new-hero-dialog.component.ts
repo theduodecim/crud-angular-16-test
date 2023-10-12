@@ -141,8 +141,6 @@ export class NewHeroDialogComponent implements OnInit {
         this.heroForm.controls['category'].patchValue(this.selCategory?.label);
   }
 
-
-
   createId(): string {
     let id = '';
     var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
