@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule, isDevMode } from '@angular/core';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -9,6 +9,15 @@ import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module';
 import { MockHeroVillanData } from './mock.data';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
+export function HttpLoaderFactory(http: HttpClient) {
+
+  return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
+}
+
 
 
 @NgModule({
@@ -21,14 +30,20 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AppRoutingModule,
     HttpClientModule,
     MainModule,
-    HttpClientInMemoryWebApiModule.forRoot(MockHeroVillanData, {delay: 1000}),
+    HttpClientInMemoryWebApiModule.forRoot(MockHeroVillanData, {delay: 1000, dataEncapsulation: false, passThruUnknownUrl: true}),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: true,
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-  
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

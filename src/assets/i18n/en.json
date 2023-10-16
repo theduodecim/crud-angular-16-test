@@ -1,0 +1,31 @@
+{ 
+    "MAIN": {
+        "title": "Manage your Heros", 
+        "btn_new": "New",
+        "languagesDropd":"Languages",
+        "btn_delete": "Delete",
+        "btn_villans": "Villans",
+        "btn_hero": "Heros",
+        "table_search": "Search",
+        "col_name": "Name",
+        "col_description":"Description",
+        "col_gear": "Gear",
+        "col_category":"Category",
+        "col_rating": "Rating",
+        "arr_showing": "Showing 15 of ",
+        "confirm_message": "Are you sure you want to delete the selected ",
+        "edit_message": " Updated",
+        "add_message": " Saved"
+    },
+
+    "NEWHERO_DIALOG": {
+        "dialog_title_create": "Create a new ",
+        "dialog_title_edit": "Edit ",
+        "hero_name": "Hero Name", 
+        "hero_description": "Description",
+        "hero_category": "Category",
+        "hero_stars": "Hero Stars",
+        "hero_gear": "Gear",
+        "save_hero": "Save" 
+      }
+}

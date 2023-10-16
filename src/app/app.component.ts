@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'proyecto-angular-mindata';
+
+  constructor(public translateService: TranslateService) {
+       this.translateService.addLangs(['en', 'es']);
+       this.translateService.setDefaultLang('es');
+       const broserLang = translateService.getBrowserLang();
+       translateService.use(broserLang?.match(/en|es/) ? broserLang : 'en');
+      
+  }
 }

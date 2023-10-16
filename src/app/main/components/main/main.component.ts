@@ -9,6 +9,8 @@ import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import * as moment from 'moment'; 
 import { Table } from 'primeng/table';
 import { NewHeroDialogComponent } from 'src/app/main/reusable-fragments/new-hero-dialog/new-hero-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
+import { DropdownChangeEvent } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-main',
@@ -21,7 +23,7 @@ export class MainComponent implements OnInit{
     hero!: Hero;
     selectedHeros!: Hero[] | null;
     submitted: boolean = false;
-  
+    totalRecords!:any;
     exportColumns!: ExportColumn[];
     dinamicDialogRef: DynamicDialogRef | undefined;
     cols: Column[] = [
@@ -35,12 +37,18 @@ export class MainComponent implements OnInit{
     villansSignal = signal<any>('');
     villansHerosComputedChange: any;
     herosVillans: string = 'Heros';
+    languageBind: any;
+
     constructor(
       private mainService: MainService, 
       private messageService: MessageService,
       private confirmationService: ConfirmationService,
-      public dialogService: DialogService
+      public dialogService: DialogService,
+      public translateService: TranslateService
       ) {
+
+   
+
         this.villansHerosComputedChange = computed(() => this.villansSignal());
         effect(() => {
           if(this.villansHerosComputedChange() == 'Heros') {
@@ -52,13 +60,27 @@ export class MainComponent implements OnInit{
       }
 
 ngOnInit(): void {
+   
+  this.languageBind = this.translateService.getDefaultLang();
+  console.error(this.languageBind);
   // this.slidersSignal.set(true);
   this.onGetHeros();
   this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+ 
+
+}
+
+
+onChangeLanguages(e: DropdownChangeEvent) {
+  var language = e.value;
+  this.translateService.use(language);
+
 }
 
 onGetVillans(mode:string) {
   this.villansSignal.set(mode);
+
 }
 
 onGetHeros(mode?:string) {
@@ -68,7 +90,7 @@ onGetHeros(mode?:string) {
   
   
   this.mainService.getHeroData(mode).subscribe((res: any) => {
-    console.log(res);
+
     var arr_temp = [];
     if(res) {
       for(let hero of res) {
@@ -80,10 +102,34 @@ onGetHeros(mode?:string) {
     this.loadingHeroTable = false;
   });
 }
+
+
+getTranslation(key: string): string {
+  return this.translateService.instant(key);
+}
+
+getVillanoHero() {
+  var villanoHero;
+  if(this.herosVillans == 'Heros') {
+    villanoHero  = this.getTranslation('MAIN.btn_hero');
+  }else {
+    villanoHero =  this.getTranslation('MAIN.btn_villans'); 
+  }
+  return villanoHero;
+}
+
+
+
 openEditNewHeroDialog(hero?:Hero) {
   this.hero = {};
   this.submitted = false;
 
+  var createHero = this.getTranslation('NEWHERO_DIALOG.dialog_title_create');
+  var editHero= this.getTranslation('NEWHERO_DIALOG.dialog_title_edit');
+ 
+  var villanoHero = this.getVillanoHero();
+
+ 
   this.dinamicDialogRef = this.dialogService.open(NewHeroDialogComponent, {
     height: '70vh',
     maximizable: false,
@@ -92,7 +138,7 @@ openEditNewHeroDialog(hero?:Hero) {
          mode: hero?.id ? 'edit hero' : 'new hero',
          villans: this.herosVillans.toLowerCase()
      },
-       header: hero?.id ? 'Edit ' + this.herosVillans.slice(0, -1) : 'Create a new ' + this.herosVillans.slice(0, -1)
+       header: hero?.id ? editHero + villanoHero.slice(0, -1) : createHero + villanoHero.slice(0, -1)
      });
      this.dinamicDialogRef.onClose.subscribe((data: any) => {
       if(typeof data?.hero !== 'undefined') {
@@ -107,9 +153,13 @@ openEditNewHeroDialog(hero?:Hero) {
 }
 addHero(hero:Hero) {
   this.loadingHeroTable = true;
+    var heroVillan = this.getVillanoHero();
+    var addString =  this.getTranslation('MAIN.add_message');
+
+
   this.mainService.addHero(hero).subscribe({
     next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Ok', detail: this.herosVillans.slice(0, -1) + ' ' + hero.name + ' Saved'});
+        this.messageService.add({ severity: 'success', summary: addString, detail: heroVillan.slice(0, -1) + ' ' + hero.name + addString});
         this.arr_heros.unshift(hero);
         this.loadingHeroTable = false;
       },
@@ -125,10 +175,14 @@ addHero(hero:Hero) {
 updateHero(hero:Hero) {
   this.loadingHeroTable = true;
   const index = this.arr_heros.findIndex(f => f.id === hero.id);
+    var heroVillan = this.getVillanoHero();
+    var updateString =  this.getTranslation('MAIN.edit_message');
+
+
     if(index !== -1) {
       this.mainService.updateHero(hero!).subscribe({
         next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1) +' Updated', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: updateString, detail: heroVillan.slice(0, -1) + updateString, life: 3000 });
             this.arr_heros[index] = hero;
             this.loadingHeroTable = false;
           },
@@ -143,18 +197,16 @@ onGetSeverity(status: string) {
     return this.mainService.getSeverity(status);
 }
 deleteSelectedHeros() {
-  
+  var confirmMessage = this.getTranslation('MAIN.confirm_message');
+  var villanoHero = this.getVillanoHero();
   this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected ' +this.herosVillans+ '?',
+      message: confirmMessage + villanoHero + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-   
         this.arr_heros = this.arr_heros.filter((val) => !this.selectedHeros?.includes(val));
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1)+' Deleted', life: 3000 });
         this.selectedHeros = null; 
-         
-
       }
   });
 }

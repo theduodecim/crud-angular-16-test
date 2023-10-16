@@ -1,0 +1,31 @@
+{
+      "MAIN": {
+            "title": "Gestiona a tus héroes", 
+            "btn_new": "Nuevo",
+            "languagesDropd": "Idiomas",
+            "btn_delete": "Borrar",
+            "btn_villans": "Villanos",
+            "btn_hero": "Heroes",
+            "table_search": "Buscar",
+            "col_name": "Nombre",
+            "col_description":"Descripción",
+            "col_gear": "Equipamiento",
+            "col_category":"Categoría",
+            "col_rating": "Puntuación",
+            "arr_showing": "Mostrando 15 de ",
+            "confirm_message": "¿Estás seguro de que deseas eliminar los ",
+            "edit_message": " Actualizado",
+            "add_message": " Guardado"
+          },
+
+          "NEWHERO_DIALOG": {
+            "dialog_title_create": "Crear Nuevo ",
+            "dialog_title_edit": "Editar ",
+            "hero_name": "Nombre del Heroe", 
+            "hero_description": "Descripción",
+            "hero_category": "Categoría",
+            "hero_stars": "Puntuación del Heroe",
+            "hero_gear": "Equipamiento",
+            "save_hero": "Guardar" 
+          }
+}
