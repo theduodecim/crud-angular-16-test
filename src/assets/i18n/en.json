@@ -13,9 +13,11 @@
         "col_category":"Category",
         "col_rating": "Rating",
         "arr_showing": "Showing 15 of ",
+        "confirm_message_title": "Confirm",
         "confirm_message": "Are you sure you want to delete the selected ",
         "edit_message": " Updated",
-        "add_message": " Saved"
+        "add_message": " Saved",
+        "delete_message": " Deleted"
     },
 
     "NEWHERO_DIALOG": {

@@ -34,6 +34,8 @@
 "@angular/router": "^16.0.0",
 "@angular/service-worker": "^16.2.9",
 "angular-in-memory-web-api": "^0.16.0",
+"@ngx-translate/core": "^15.0.0",
+"@ngx-translate/http-loader": "^8.0.0",
 "file-saver": "^2.0.5",
 "moment": "^2.29.4",
 "primeflex": "^3.3.1",
@@ -44,3 +46,8 @@
 "xlsx": "^0.18.5",
 "zone.js": "~0.13.0"
 ```
+<div align="center">
+  <img height="200" src="https://i.ibb.co/P4bB8R4/main-window.png"  />
+</div>
+
+###

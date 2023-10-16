@@ -13,9 +13,12 @@
             "col_category":"Categoría",
             "col_rating": "Puntuación",
             "arr_showing": "Mostrando 15 de ",
+            "confirm_message_title": "Confirmar",
             "confirm_message": "¿Estás seguro de que deseas eliminar los ",
             "edit_message": " Actualizado",
-            "add_message": " Guardado"
+            "add_message": " Guardado",
+            "delete_message": " Eliminado"
+            
           },
 
           "NEWHERO_DIALOG": {

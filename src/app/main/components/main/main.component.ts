@@ -60,15 +60,9 @@ export class MainComponent implements OnInit{
       }
 
 ngOnInit(): void {
-   
   this.languageBind = this.translateService.getDefaultLang();
-  console.error(this.languageBind);
-  // this.slidersSignal.set(true);
   this.onGetHeros();
   this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
-
- 
-
 }
 
 
@@ -131,7 +125,7 @@ openEditNewHeroDialog(hero?:Hero) {
 
  
   this.dinamicDialogRef = this.dialogService.open(NewHeroDialogComponent, {
-    height: '70vh',
+    height: '75vh',
     maximizable: false,
     data: {
          hero: hero,
@@ -198,25 +192,30 @@ onGetSeverity(status: string) {
 }
 deleteSelectedHeros() {
   var confirmMessage = this.getTranslation('MAIN.confirm_message');
+  var confirmMessageTitle = this.getTranslation('MAIN.confirm_message_title');
   var villanoHero = this.getVillanoHero();
+  var delete_message = this.getTranslation('MAIN.delete_message');
+
+
   this.confirmationService.confirm({
       message: confirmMessage + villanoHero + '?',
-      header: 'Confirm',
+      header: confirmMessageTitle,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.arr_heros = this.arr_heros.filter((val) => !this.selectedHeros?.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: this.herosVillans.slice(0, -1)+' Deleted', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: delete_message, detail: villanoHero.slice(0, -1)+ delete_message, life: 3000 });
         this.selectedHeros = null; 
       }
   });
 }
 
 exportExcel() {
+  var villanoHero = this.getVillanoHero();
   import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(this.arr_heros);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, this.herosVillans);
+      this.saveAsExcelFile(excelBuffer, villanoHero);
   });
 }
 
