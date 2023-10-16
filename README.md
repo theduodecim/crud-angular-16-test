@@ -47,7 +47,7 @@
 "zone.js": "~0.13.0"
 ```
 <div align="center">
-  <img height="200" src="https://i.ibb.co/P4bB8R4/main-window.png"  />
+  <img  src="https://i.ibb.co/P4bB8R4/main-window.png"  />
 </div>
 
 ###
