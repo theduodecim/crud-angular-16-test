@@ -23,20 +23,20 @@ export class MockHeroVillanData implements InMemoryDbService {
                   rating: 5
                 },
                 {
-                  "id": "3",
-                  "name": "Captain America",
-                  "description": "A super-soldier with superhuman strength and durability.",
-                  "gear": "His indestructible shield",
-                  "category": "Melee",
-                  "rating": 4
+                  id: "3",
+                  name: "Captain America",
+                  description: "A super-soldier with superhuman strength and durability.",
+                  gear: "His indestructible shield",
+                  category: "Melee",
+                  rating: 4
                 },
                 {
-                  "id": "498",
-                  "name": "The Invisible Woman",
-                  "description": "A member of the Fantastic Four with the ability to turn invisible and generate force fields.",
-                  "gear": "Her invisible force fields",
-                  "category": "Ranged",
-                  "rating": 4
+                  id: "498",
+                  name: "The Invisible Woman",
+                  description: "A member of the Fantastic Four with the ability to turn invisible and generate force fields.",
+                  gear: "Her invisible force fields",
+                  category: "Ranged",
+                  rating: 4
                 },
                 {
                   "id": "499",

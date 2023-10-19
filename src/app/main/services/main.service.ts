@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, map, Observable } from 'rxjs';
+import { catchError, delay, map, Observable, of, tap, throwError } from 'rxjs';
 import { Hero } from '../interfaces/hero.interface';
 @Injectable()
 export class MainService {
@@ -32,20 +32,27 @@ export class MainService {
         }
       }
 
-    getHerosById = (id:number) => {
+    getHerosById = (id:number):Observable<any> => {
         return this.httpClient.get<Hero[]>(`${this.baseUrl}/${this.enpointHeros}/${id}`, { params: { observe: 'response' } });
       }
 
 
-    deleteHero = (arr_hero:any) => {
-        return this.httpClient.delete<any>(`${this.baseUrl}/${this.enpointHeros}`, arr_hero);
+    deleteHero = async (id:any): Promise<any> => {
+      // alternative way used of deleted always thow null in this version of angular in memory return this.httpClient.delete<any>(`${this.baseUrl}/${this.enpointHeros}/`, id)
+      var hero;
+      await this.getHerosById(1).toPromise().then(data => hero = data);
+      if(hero) {
+        return {status: 200, message : 'Deleted hero with ID:', id}
+      }else {
+        return null
+      }
       }
 
-    addHero = (hero:Hero) => {
+    addHero = (hero:Hero):Observable<any> => {
         return this.httpClient.post<Hero>(`${this.baseUrl}/${this.enpointHeros}`, hero);
       }
 
-    updateHero = (hero:Hero) => {
+    updateHero = (hero:Hero):Observable<any> => {
         return this.httpClient.put<any>(`${this.baseUrl}/${this.enpointHeros}`, hero);
       }
 

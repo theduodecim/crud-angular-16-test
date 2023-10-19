@@ -42,19 +42,19 @@ export class NewHeroDialogComponent implements OnInit {
     private messageService: MessageService, 
     public mainService: MainService, 
     public dynamicDialogRef: DynamicDialogRef,
-    public dialogConfig: DynamicDialogConfig
+    public dialogConfig?: DynamicDialogConfig
     ) {
     
   }
 
   ngOnInit(): void {
       this.createForm();
-      if(this.dialogConfig.data.mode == 'edit hero') {
-        this.mode = this.dialogConfig.data.mode;
-        this.loadHeroData(this.dialogConfig.data.hero);
+      if(this.dialogConfig?.data?.mode! == 'edit hero') {
+        this.mode = this.dialogConfig?.data?.mode;
+        this.loadHeroData(this.dialogConfig?.data?.hero!);
       }
-      console.log(this.dialogConfig.data.villans);
-      this.onGetHeros(this.dialogConfig.data.villans);
+   
+      this.onGetHeros(this.dialogConfig?.data?.villans!);
   }
 
   onGetHeros(mode?: string) {

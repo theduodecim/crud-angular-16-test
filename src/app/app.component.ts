@@ -7,13 +7,13 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'proyecto-angular-mindata';
+ 
 
   constructor(public translateService: TranslateService) {
        this.translateService.addLangs(['en', 'es']);
        this.translateService.setDefaultLang('es');
        const broserLang = translateService.getBrowserLang();
        translateService.use(broserLang?.match(/en|es/) ? broserLang : 'en');
-      
+        
   }
 }

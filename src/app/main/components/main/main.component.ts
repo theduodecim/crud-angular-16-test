@@ -158,7 +158,7 @@ addHero(hero:Hero) {
         this.loadingHeroTable = false;
       },
     error: (err) => {
-      console.log(err);
+      
        this.loadingHeroTable = false;
     }
   });
@@ -181,7 +181,7 @@ updateHero(hero:Hero) {
             this.loadingHeroTable = false;
           },
         error: (err) => {
-          console.log(err);
+          
           this.loadingHeroTable = false;
         }
       });

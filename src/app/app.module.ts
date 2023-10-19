@@ -30,7 +30,16 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     HttpClientModule,
     MainModule,
-    HttpClientInMemoryWebApiModule.forRoot(MockHeroVillanData, {delay: 1000, dataEncapsulation: false, passThruUnknownUrl: true}),
+    HttpClientInMemoryWebApiModule.forRoot(MockHeroVillanData, {
+      delay: 1000, 
+      dataEncapsulation: false, 
+      put204: false, 
+      passThruUnknownUrl: true
+    
+    }
+      
+      
+      ),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: true,
       // Register the ServiceWorker as soon as the application is stable
