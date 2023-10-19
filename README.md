@@ -15,7 +15,7 @@
 - Including The internationalization (i18n) Library For Angular to Support Multiples Languages
 
 #### Unit Testing 
--	Component Created Successfully
+-	Components Created Successfully
 -	MainService GET - ADD - UPDATE - DELETE Successfully
 <div align="center">
   <img  src="https://i.ibb.co/bKhwDCd/unit-testing.png"  />
@@ -57,9 +57,3 @@
 <div align="center">
   <img  src="https://i.ibb.co/P4bB8R4/main-window.png"  />
 </div>
-
-<div align="center">
-  <img  src="https://i.ibb.co/P4bB8R4/main-window.png"  />
-</div>
-
-###
