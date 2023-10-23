@@ -21,9 +21,7 @@ import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
-  declarations: [
-   
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     BrowserModule,
@@ -44,7 +42,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ToastModule,
     CardModule,
     DropdownModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
   ],
   exports: [
     BrowserModule,
@@ -65,7 +63,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ToastModule,
     CardModule,
     DropdownModule,
-    ConfirmDialogModule
-  ]
+    ConfirmDialogModule,
+  ],
 })
-export class PrimeNGModule { }
+export class PrimeNGModule {}

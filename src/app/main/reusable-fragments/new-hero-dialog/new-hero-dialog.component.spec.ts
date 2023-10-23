@@ -3,7 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+  TranslateStore,
+} from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PrimeNGModule } from 'src/app/primeng.module';
@@ -19,10 +24,7 @@ describe('NewHeroDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MainComponent,
-        NewHeroDialogComponent
-      ],
+      declarations: [MainComponent, NewHeroDialogComponent],
       imports: [
         CommonModule,
         PrimeNGModule,
@@ -32,17 +34,18 @@ describe('NewHeroDialogComponent', () => {
           loader: {
             provide: TranslateLoader,
             useFactory: HttpLoaderFactory,
-            deps: [HttpClient]
-          }
+            deps: [HttpClient],
+          },
         }),
-      ], providers: [
+      ],
+      providers: [
         MessageService,
         TranslateStore,
         TranslateService,
         MainService,
         DynamicDialogRef,
-        DynamicDialogConfig
-      ]
+        DynamicDialogConfig,
+      ],
     });
     fixture = TestBed.createComponent(NewHeroDialogComponent);
     component = fixture.componentInstance;

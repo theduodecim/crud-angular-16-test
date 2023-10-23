@@ -1,92 +1,178 @@
-<br>
-    <form [formGroup]="heroForm">
+<br />
+<form [formGroup]="heroForm">
+  <div class="field mt-2">
+    <span class="p-float-label">
+      <p-autoComplete
+        #autoEl
+        [ngClass]="{
+          'ng-invalid ng-dirty':
+            heroForm.get('name')?.invalid && heroForm.get('name')?.touched
+        }"
+        [ngModelOptions]="{ standalone: true }"
+        [(ngModel)]="selAutoComplete"
+        (onSelect)="onSelectAutoCompleteHero($event, autoEl)"
+        (completeMethod)="onCompleteAutoCHero($event, autoEl)"
+        [forceSelection]="false"
+        [suggestions]="arr_autoCompleteOpt"
+        (completeMethod)="onAutocompleteChange($event)"
+        field="name"
+      >
+        <ng-template let-hero pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            <div uppercase>{{ hero.name }}</div>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+      <label htmlFor="username"
+        ><i class="pi pi-search"></i>
+        {{ "NEWHERO_DIALOG.hero_name" | translate }}
+        <span style="color: red">*</span></label
+      >
+    </span>
 
-        <div class="field mt-2">
+    <p
+      style="color: red"
+      class="text-sm"
+      *ngIf="heroForm.get('name')?.getError('duplicateHeroError')"
+    >
+      {{ "NEWHERO_DIALOG.duplicateValidErr" | translate }}
+    </p>
+  </div>
 
-            
-            <span class="p-float-label">
-                <p-autoComplete
-                [ngClass]="{'ng-invalid ng-dirty': heroForm.get('name')?.invalid && heroForm.get('name')?.touched}" 
-                [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="selAutoComplete" 
-                (onSelect)="onSelectAutoCompleteHero($event)"  [forceSelection]="true" [suggestions]="arr_autoCompleteOpt" (completeMethod)="onAutocompleteChange($event)" field="name"></p-autoComplete>
-               <label htmlFor="username"><i class="pi pi-search" ></i> {{'NEWHERO_DIALOG.hero_name' | translate}}  <span style="color: red">*</span></label> 
-            </span>
-        
-        </div>
-       
+  <div class="field mt-4">
+    <span class="p-float-label">
+      <textarea
+        [ngClass]="{
+          'ng-invalid ng-dirty':
+            heroForm.get('description')?.invalid &&
+            heroForm.get('description')?.touched
+        }"
+        formControlName="description"
+        id="float-input"
+        rows="3"
+        cols="20"
+        pInputTextarea
+      ></textarea>
+      <label for="float-input"
+        >{{ "NEWHERO_DIALOG.hero_description" | translate }}
+        <span style="color: red">*</span></label
+      >
+    </span>
+  </div>
 
-        
-        <div class="field mt-4">
-            <span class="p-float-label">
-                    <textarea    [ngClass]="{'ng-invalid ng-dirty': heroForm.get('description')?.invalid && heroForm.get('description')?.touched}"  formControlName="description" id="float-input" rows="3" cols="20" pInputTextarea></textarea>
-              <label for="float-input">{{'NEWHERO_DIALOG.hero_description' | translate}}  <span style="color: red">*</span></label>
-            </span>
-        </div>
-       
+  <div class="field mt-4">
+    <span class="p-float-label">
+      <p-dropdown
+        inputId="category"
+        [options]="arr_category_options"
+        (onChange)="onChangeCategory($event)"
+      >
+        <ng-template pTemplate="selectedItem">
+          <p-tag
+            *ngIf="selCategory?.label"
+            [value]="selCategory?.label"
+            [severity]="onGetSeverity(selCategory?.label)"
+          ></p-tag>
+        </ng-template>
+        <ng-template let-option pTemplate="item">
+          <p-tag
+            [value]="option.label"
+            [severity]="onGetSeverity(option.label)"
+          ></p-tag>
+        </ng-template>
+      </p-dropdown>
+      <label for="float-label"
+        >{{ "NEWHERO_DIALOG.hero_category" | translate }}
+        <span style="color: red">*</span></label
+      >
+    </span>
+  </div>
 
-        <div class="field  mt-4">
-            <span class="p-float-label">
-                <p-dropdown   inputId="category" [options]="arr_category_options" (onChange)="onChangeCategory($event)">
-                    <ng-template pTemplate="selectedItem">
-                        <p-tag *ngIf="selCategory?.label" [value]="selCategory?.label" [severity]="onGetSeverity(selCategory?.label)"></p-tag>
-                    </ng-template>
-                    <ng-template let-option pTemplate="item">
-                        <p-tag [value]="option.label" [severity]="onGetSeverity(option.label)"></p-tag>
-                    </ng-template>
-                </p-dropdown>
-                <label for="float-label">{{'NEWHERO_DIALOG.hero_category' | translate}}  <span style="color: red">*</span></label>
-            </span>
-        </div>
+  <h4>
+    {{ "NEWHERO_DIALOG.hero_stars" | translate }}
+    <i style="color: #3b82f6" class="pi pi-star-fill"></i>
+  </h4>
 
+  <div class="formgrid grid">
+    <div class="field-radiobutton col-4 col-sm-6">
+      <p-radioButton
+        id="rating"
+        name="rating"
+        value="1"
+        formControlName="rating"
+      ></p-radioButton>
+      <label for="rating">1</label>
+    </div>
 
-        <h4>{{'NEWHERO_DIALOG.hero_stars' | translate}} <i style="color: #3B82F6" class="pi pi-star-fill"></i> </h4>
+    <div class="field-radiobutton col-4 col-sm-6">
+      <p-radioButton
+        id="rating"
+        name="rating"
+        value="2"
+        formControlName="rating"
+      ></p-radioButton>
+      <label for="rating">2</label>
+    </div>
+    <div class="field-radiobutton col-4 col-sm-6">
+      <p-radioButton
+        id="rating"
+        name="rating"
+        value="3"
+        formControlName="rating"
+      ></p-radioButton>
+      <label for="rating">3</label>
+    </div>
+    <div class="field-radiobutton col-4 col-sm-6">
+      <p-radioButton
+        id="rating"
+        name="rating"
+        value="4"
+        formControlName="rating"
+      ></p-radioButton>
+      <label for="rating">4</label>
+    </div>
+    <div class="field-radiobutton col-4 col-sm-6">
+      <p-radioButton
+        id="rating"
+        name="rating"
+        value="5"
+        formControlName="rating"
+      ></p-radioButton>
+      <label for="rating">5</label>
+    </div>
+  </div>
+  <div class="field mt-4">
+    <span class="p-float-label">
+      <input
+        [ngClass]="{
+          'border-red':
+            heroForm.get('gear')?.invalid && heroForm.get('gear')?.touched
+        }"
+        formControlName="gear"
+        class="p-inputtext-sm"
+        pInputText
+        id="username"
+      />
+      <label for="float-input"
+        >{{ "NEWHERO_DIALOG.hero_gear" | translate }}
+      </label>
+    </span>
+  </div>
 
-        <div class="formgrid grid">
-            <div class="field-radiobutton col-4 col-sm-6">
-                <p-radioButton id="rating" name="rating" value="1" formControlName="rating"></p-radioButton>
-                <label for="rating">1</label>
-            </div>
-
-            <div class="field-radiobutton col-4 col-sm-6">
-                <p-radioButton id="rating" name="rating" value="2" formControlName="rating"></p-radioButton>
-                <label for="rating">2</label>
-            </div>
-            <div class="field-radiobutton col-4 col-sm-6">
-                <p-radioButton id="rating" name="rating" value="3" formControlName="rating"></p-radioButton>
-                <label for="rating">3</label>
-            </div>
-            <div class="field-radiobutton col-4 col-sm-6">
-                <p-radioButton id="rating" name="rating" value="4" formControlName="rating"></p-radioButton>
-                <label for="rating">4</label>
-            </div>
-            <div class="field-radiobutton col-4 col-sm-6">
-                <p-radioButton id="rating" name="rating" value="5" formControlName="rating"></p-radioButton>
-                <label for="rating">5</label>
-            </div>
-      
-        </div>
-        <div class="field mt-4">
-            <span class="p-float-label">
-                <input   [ngClass]="{'border-red': heroForm.get('gear')?.invalid && heroForm.get('gear')?.touched}"  formControlName="gear" class="p-inputtext-sm" pInputText id="username" />
-              <label for="float-input">{{'NEWHERO_DIALOG.hero_gear' | translate}} </label>
-            </span>
-        </div>
-  
-        <div class="p-dialog-footer p-0">
-            <div class="flex justify-content-between flex-wrap card-container purple-container">
-                <div>
-                    
-                </div>
-                <div class="flex align-items-right justify-content-right m-2">
-                    <p-button [disabled]="this.heroForm.invalid" (onClick)="onSaveNewHero()" label="Primary" styleClass="p-button-raised p-button-text"  [label]="'NEWHERO_DIALOG.save_hero' | translate"></p-button>
-                 
-                </div>
-           
-            </div>
-        </div>
-       
-    
-    </form>
-
-  
+  <div class="p-dialog-footer p-0">
+    <div
+      class="flex justify-content-between flex-wrap card-container purple-container"
+    >
+      <div></div>
+      <div class="flex align-items-right justify-content-right m-2">
+        <p-button
+          [disabled]="this.heroForm.invalid"
+          (onClick)="onSaveNewHero()"
+          label="Primary"
+          styleClass="p-button-raised p-button-text"
+          [label]="'NEWHERO_DIALOG.save_hero' | translate"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+</form>

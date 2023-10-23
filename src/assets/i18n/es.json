@@ -29,6 +29,7 @@
             "hero_category": "Categoría",
             "hero_stars": "Puntuación del Heroe",
             "hero_gear": "Equipamiento",
-            "save_hero": "Guardar" 
+            "save_hero": "Guardar",
+            "duplicateValidErr": "El héroe ya existe. Por favor, elige un nombre diferente." 
           }
 }

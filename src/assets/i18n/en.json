@@ -28,6 +28,7 @@
         "hero_category": "Category",
         "hero_stars": "Hero Stars",
         "hero_gear": "Gear",
-        "save_hero": "Save" 
+        "save_hero": "Save",
+        "duplicateValidErr": "The hero already exists. Please choose a different name." 
       }
 }
