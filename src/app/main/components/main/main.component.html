@@ -29,14 +29,14 @@
         <p-dropdown
           [(ngModel)]="languageBind"
           inputId="languages"
-          [options]="this.translateService.getLangs()"
+          [options]="languageOptions"
           (onChange)="onChangeLanguages($event)"
         >
           <ng-template pTemplate="selectedItem">
             {{ this.languageBind }}
           </ng-template>
           <ng-template let-option pTemplate="item">
-            {{ option }}
+            {{ option.label }}
           </ng-template>
         </p-dropdown>
         <label for="float-label"

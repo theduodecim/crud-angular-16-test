@@ -28,6 +28,16 @@ export class MainService {
         return 'info';
     }
   }
+  validateDuplicatedHero(hero: Hero, arr_heros: Hero[]): Boolean {
+    const index = arr_heros.findIndex(
+      (f) => f.name?.toUpperCase() === hero.name?.toUpperCase()
+    );
+    if (index !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   getHeroData = (mode?: string): Observable<any> => {
     if (mode == 'villans') {

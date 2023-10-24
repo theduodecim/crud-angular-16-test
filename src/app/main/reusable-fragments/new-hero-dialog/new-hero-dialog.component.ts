@@ -51,12 +51,8 @@ export class NewHeroDialogComponent implements OnInit {
       this.mode = this.dialogConfig?.data?.mode;
       this.loadHeroData(this.dialogConfig?.data?.hero!);
     }
-
     this.onGetHeros(this.dialogConfig?.data?.villans!);
   }
-
-  test(e: any) {}
-
   onGetHeros(mode?: string) {
     this.mainService.getHeroData(mode).subscribe((res: any) => {
       var arr_temp = [];
@@ -68,7 +64,6 @@ export class NewHeroDialogComponent implements OnInit {
       }
     });
   }
-
   onAutocompleteChange(event: AutoCompleteCompleteEvent) {
     let filtered: any[] = [];
     let query = event.query;
@@ -86,14 +81,11 @@ export class NewHeroDialogComponent implements OnInit {
     }
     this.arr_autoCompleteOpt = filtered;
   }
-  onSelectAutoCompleteHero(event: any, autoCElemnt: AutoComplete) {
-    var name = event.name.toUpperCase();
-    this.heroForm.controls['name'].patchValue(name);
-    autoCElemnt!.inputEL!.nativeElement!.value =
-      autoCElemnt!.inputEL!.nativeElement!.value.toUpperCase();
-  }
-  onCompleteAutoCHero(event: any, autoCElemnt: AutoComplete) {
-    var name = event.query.toUpperCase();
+
+  onSelorCompleteAutoCompleteHero(event: any, autoCElemnt: AutoComplete) {
+    var name;
+    if (event?.query?.toUpperCase()) name = event?.query?.toUpperCase();
+    if (event?.name?.toUpperCase()) name = event?.name?.toUpperCase();
     this.heroForm.controls['name'].patchValue(name);
     autoCElemnt!.inputEL!.nativeElement!.value =
       autoCElemnt!.inputEL!.nativeElement!.value.toUpperCase();
@@ -135,11 +127,16 @@ export class NewHeroDialogComponent implements OnInit {
     var validateDuplicateHero = this.validateDuplicatedHero(
       this.heroForm.value
     );
-    if (validateDuplicateHero) {
-      if (this.mode == 'edit hero') {
-        this.dynamicDialogRef.close({
-          mode: 'edit hero',
-          hero: this.heroForm.value,
+
+    if (this.mode == 'edit hero') {
+      this.dynamicDialogRef.close({
+        mode: 'edit hero',
+        hero: this.heroForm.value,
+      });
+    } else {
+      if (validateDuplicateHero) {
+        this.heroForm.controls['name'].setErrors({
+          duplicateHeroError: 'Duplicated',
         });
       } else {
         const newId = this.createId();
@@ -149,23 +146,11 @@ export class NewHeroDialogComponent implements OnInit {
           hero: this.heroForm.value,
         });
       }
-    } else {
-      this.heroForm.controls['name'].setErrors({
-        duplicateHeroError: 'Duplicated',
-      });
     }
   }
 
   validateDuplicatedHero(hero: Hero): Boolean {
-    const index = this.arr_heros.findIndex(
-      (f) => f.name?.toUpperCase() === hero.name?.toUpperCase()
-    );
-
-    if (index !== -1) {
-      return false;
-    } else {
-      return true;
-    }
+    return this.mainService.validateDuplicatedHero(hero, this.arr_heros);
   }
 
   onGetSeverity(status: string) {

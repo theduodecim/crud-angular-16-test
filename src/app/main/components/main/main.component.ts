@@ -1,5 +1,9 @@
 import { Component, computed, effect, OnInit, signal } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {
+  ConfirmationService,
+  MessageService,
+  SelectItemGroup,
+} from 'primeng/api';
 import { Hero } from '../../interfaces/hero.interface';
 import { MainService } from '../../services/main.service';
 import * as FileSaver from 'file-saver';
@@ -9,7 +13,7 @@ import * as moment from 'moment';
 import { Table } from 'primeng/table';
 import { NewHeroDialogComponent } from 'src/app/main/reusable-fragments/new-hero-dialog/new-hero-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
-import { DropdownChangeEvent } from 'primeng/dropdown';
+import { DropdownChangeEvent, DropdownFilterOptions } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-main',
@@ -38,7 +42,10 @@ export class MainComponent implements OnInit {
   villansHerosComputedChange: any;
   herosVillans: string = 'Heros';
   languageBind: any;
-
+  languageOptions: any = [
+    { label: 'es', value: 'es' },
+    { label: 'en', value: 'en' },
+  ];
   constructor(
     public mainService: MainService,
     public messageService: MessageService,

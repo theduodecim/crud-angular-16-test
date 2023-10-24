@@ -1,14 +1,19 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { inject, TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MainService } from './main.service';
-import { Hero } from '../interfaces/hero.interface';
-import { Observable } from 'rxjs';
+
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MockHeroVillanData } from 'src/app/mock.data';
+
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+  TranslateStore,
+} from '@ngx-translate/core';
+import { HttpLoaderFactory } from '../main.module';
+import { Hero } from '../interfaces/hero.interface';
 
 describe('Testing "MainService"', () => {
   let service: MainService;
@@ -24,8 +29,21 @@ describe('Testing "MainService"', () => {
           passThruUnknownUrl: true,
           delete404: true,
         }),
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient],
+          },
+        }),
       ],
-      providers: [MainService, HttpClientTestingModule],
+      providers: [
+        MainService,
+        HttpClientTestingModule,
+        TranslateService,
+        TranslateStore,
+        TranslateLoader,
+      ],
     });
     service = TestBed.inject(MainService);
   });
@@ -42,7 +60,7 @@ describe('Testing "MainService"', () => {
         .getHeroData()
         .toPromise()
         .then((data) => (heros = data));
-      console.log(heros);
+
       expect(heros).toBeTruthy();
     }
   ));
@@ -64,7 +82,7 @@ describe('Testing "MainService"', () => {
         .addHero(newHero)
         .toPromise()
         .then((res) => (success = res));
-      console.log(success);
+
       expect(success).toBeTruthy();
     }
   ));
@@ -83,7 +101,7 @@ describe('Testing "MainService"', () => {
         .updateHero(hero)
         .toPromise()
         .then((res) => (success = res));
-      console.log(success);
+
       expect(success).toBeTruthy();
     }
   ));
@@ -94,8 +112,46 @@ describe('Testing "MainService"', () => {
       var success: any;
 
       await mainService.deleteHero(1).then((res) => (success = res));
-      console.log(success);
+
       expect(success).toBeTruthy();
     }
   ));
+
+  it('Main Service Get Hero by Id', inject(
+    [HttpClient, MainService],
+    async (httpClientTest: HttpClient, mainService: MainService) => {
+      var hero: any;
+      await mainService
+        .getHerosById(1)
+        .toPromise()
+        .then((data) => (hero = data));
+      expect(hero.id).toBeTruthy();
+    }
+  ));
+
+  it('Should Validate Duplicated Hero', inject(
+    [HttpClient, MainService],
+    async (httpClientTest: HttpClient, mainService: MainService) => {
+      var heros: Hero[] = [];
+      const hero = {
+        id: '1',
+        name: 'The Mighty Thor',
+        description: 'A powerful Norse god of thunder and lightning.',
+        gear: 'Mjolnir, his enchanted hammer',
+        category: 'Melee',
+        rating: 5,
+      };
+      await mainService
+        .getHeroData()
+        .toPromise()
+        .then((data) => (heros = data));
+
+     
+      // Set up your test conditions here, so that `validateDuplicatedHero(hero)` returns the expected result
+      const isDuplicated = mainService.validateDuplicatedHero(hero, heros);
+      expect(isDuplicated).toBe(true); // Use an expectation to validate the result
+    }
+  ));
+
+
 });
