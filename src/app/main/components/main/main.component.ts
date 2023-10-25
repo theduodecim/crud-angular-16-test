@@ -132,7 +132,7 @@ export class MainComponent implements OnInit {
         ? editHero + villanoHero.slice(0, -1)
         : createHero + villanoHero.slice(0, -1),
     });
-    this.dinamicDialogRef.onClose.subscribe((data: any) => {
+    this.dinamicDialogRef?.onClose.subscribe((data: any) => {
       if (typeof data?.hero !== 'undefined') {
         if (data?.mode == 'new hero') {
           this.addHero(data?.hero);

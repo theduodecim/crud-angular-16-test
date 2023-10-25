@@ -19,8 +19,14 @@ import { By } from '@angular/platform-browser';
 
 describe('Testing Translate Feature', () => {
   let service: MainService;
+  let translateService: TranslateService;
   let component: MainComponent;
   let fixture: ComponentFixture<MainComponent>;
+
+
+
+
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -49,6 +55,7 @@ describe('Testing Translate Feature', () => {
       ],
     });
     service = TestBed.inject(MainService);
+    translateService = TestBed.inject(TranslateService)
     fixture = TestBed.createComponent(MainComponent);
     component = fixture.componentInstance;
   });
@@ -63,9 +70,19 @@ describe('Testing Translate Feature', () => {
     const dropdown: Dropdown = fixture.debugElement.query(
       By.css('p-dropdown')
     ).componentInstance;
-    (dropdown);
+    dropdown;
     dropdown.selectItem(new Event('change'), { label: 'en', value: 'en' });
     dropdown.onChange.emit({ originalEvent: new Event('change'), value: 'es' });
     expect(component!.languageBind).toEqual(dropdown?.value);
   });
+
+
+ 
+ 
+
+
+
+
+
+
 });

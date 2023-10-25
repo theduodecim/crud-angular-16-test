@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   ComponentFixture,
   fakeAsync,
@@ -29,15 +28,14 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MockHeroVillanData } from 'src/app/mock.data';
 import { PrimeNGModule } from 'src/app/primeng.module';
 import { MainComponent } from '../../components/main/main.component';
+import { Hero } from '../../interfaces/hero.interface';
 import { HttpLoaderFactory } from '../../main.module';
 import { MainService } from '../../services/main.service';
-
 import { NewHeroDialogComponent } from './new-hero-dialog.component';
-
 describe('NewHeroDialogComponent', () => {
   let component: NewHeroDialogComponent;
   let fixture: ComponentFixture<NewHeroDialogComponent>;
-
+  let dynamicDialogRef: DynamicDialogRef;
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MainComponent, NewHeroDialogComponent],
@@ -72,6 +70,7 @@ describe('NewHeroDialogComponent', () => {
     });
     fixture = TestBed.createComponent(NewHeroDialogComponent);
     component = fixture.componentInstance;
+    dynamicDialogRef = TestBed.inject(DynamicDialogRef);
     fixture.detectChanges();
   });
 
@@ -139,7 +138,8 @@ describe('NewHeroDialogComponent', () => {
   });
 
   it('Should update heroForm and autoCElemnt when event contains query', () => {
-    const event = { query: 'thor' };
+    const event1 = { query: 'thor' };
+    const event2 = { name: 'thor' };
     const autoCElemnt: AutoComplete = {
       inputEL: {
         nativeElement: {
@@ -147,7 +147,8 @@ describe('NewHeroDialogComponent', () => {
         },
       },
     } as AutoComplete;
-    component.onSelorCompleteAutoCompleteHero(event, autoCElemnt);
+    component.onSelorCompleteAutoCompleteHero(event1, autoCElemnt);
+    component.onSelorCompleteAutoCompleteHero(event2, autoCElemnt);
     // Expectations
     const heroForm: FormGroup = component.heroForm;
     const nameControl = heroForm.controls['name'];
@@ -157,9 +158,63 @@ describe('NewHeroDialogComponent', () => {
     );
   });
 
+  it('Should set mode and load hero data if mode is "edit hero"', () => {
+    const hero: Hero = {
+      id: '999',
+      name: 'The Mighty Thor 2',
+      description: 'A powerful Norse god of thunder and lightning.',
+      gear: 'Mjolnir, his enchanted hammer',
+      category: 'Melee',
+      rating: 1,
+    };
+    const dialogConfig = {
+      data: {
+        mode: 'edit hero',
+        hero: hero,
+      },
+    };
 
+    spyOn(component, 'loadHeroData');
+    component.dialogConfig = dialogConfig;
+    component.ngOnInit();
 
+    expect(component.mode).toBe('edit hero');
+    expect(component.loadHeroData).toHaveBeenCalledWith(dialogConfig.data.hero);
+  });
+  it('Should call with the provided hero and array of heroes', inject(
+    [HttpClient, MainService],
+    async (httpClientTest: HttpClient, mainService: MainService) => {
+    const hero: Hero = {
+      id: '999',
+      name: 'The Mighty Thor 2',
+      description: 'A powerful Norse god of thunder and lightning.',
+      gear: 'Mjolnir, his enchanted hammer',
+      category: 'Melee',
+      rating: 1,
+    };
+    spyOn(mainService, 'validateDuplicatedHero').and.returnValue(true); // You can customize the return value based on your test case
+    const isDuplicate = component.validateDuplicatedHero(hero);
+    expect(isDuplicate).toBe(true); // You can adjust the expectation based on your test case
+  }));
 
-
-
+  it('Should close the dialog with new hero mode and hero data if not a duplicate', () => {
+    component.mode = 'new hero';
+    spyOn(dynamicDialogRef, 'close');
+    spyOn(component, 'validateDuplicatedHero').and.returnValue(false);
+    component.onSaveNewHero();
+    expect(dynamicDialogRef.close).toHaveBeenCalledWith({
+      mode: 'new hero',
+      hero: component.heroForm.value,
+    });
+    
+  });
+  it('Should set duplicateHeroError if hero is a duplicate', () => {
+    component.mode = 'new hero';
+    spyOn(component, 'validateDuplicatedHero').and.returnValue(true);
+    spyOn(component.heroForm.controls['name'], 'setErrors');
+    component.onSaveNewHero();
+    expect(component.heroForm.controls['name'].setErrors).toHaveBeenCalledWith({
+      duplicateHeroError: 'Duplicated',
+    });
+  });
 });

@@ -1,5 +1,5 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MainService } from './main.service';
 
@@ -14,9 +14,13 @@ import {
 } from '@ngx-translate/core';
 import { HttpLoaderFactory } from '../main.module';
 import { Hero } from '../interfaces/hero.interface';
+import { MainComponent } from '../components/main/main.component';
+import { of } from 'rxjs';
 
 describe('Testing "MainService"', () => {
   let service: MainService;
+  let component: MainComponent;
+  let fixture: ComponentFixture<MainComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,6 +50,9 @@ describe('Testing "MainService"', () => {
       ],
     });
     service = TestBed.inject(MainService);
+    fixture = TestBed.createComponent(MainComponent);
+    component = fixture.componentInstance;
+
   });
 
   it('Should create', () => {
@@ -141,6 +148,14 @@ describe('Testing "MainService"', () => {
         category: 'Melee',
         rating: 5,
       };
+      const hero2 = {
+        id: '891',
+        name: 'The Mighty Thor x',
+        description: 'A powerful Norse god of thunder and lightning.',
+        gear: 'Mjolnir, his enchanted hammer',
+        category: 'Melee',
+        rating: 5,
+      };
       await mainService
         .getHeroData()
         .toPromise()
@@ -150,8 +165,36 @@ describe('Testing "MainService"', () => {
       // Set up your test conditions here, so that `validateDuplicatedHero(hero)` returns the expected result
       const isDuplicated = mainService.validateDuplicatedHero(hero, heros);
       expect(isDuplicated).toBe(true); // Use an expectation to validate the result
+      const isnotDuplicated = mainService.validateDuplicatedHero(hero2, heros);
+      expect(isnotDuplicated).toBe(false); // Use an expectation to validate the result
     }
   ));
 
+/*
+  it('should add a hero successfully', fakeAsync(() => {
+    component.ngOnInit();
+    const newhero: Hero = {
+      id: '999',
+      name: 'The Mighty Thor 2',
+      description: 'A powerful Norse god of thunder and lightning.',
+      gear: 'Mjolnir, his enchanted hammer',
+      category: 'Melee',
+      rating: 5
+    }  
+  
+   spyOn(component, 'openEditNewHeroDialog');
+   // spyOn(mainService, 'addHero');
+    component.openEditNewHeroDialog();
+    tick(2000)
+
+
+
+
+
+    console.log(component.arr_heros);
+    expect(component.openEditNewHeroDialog).toHaveBeenCalledWith();
+  //  expect(mainService.addHero).toHaveBeenCalled();
+  }));
+*/
 
 });
