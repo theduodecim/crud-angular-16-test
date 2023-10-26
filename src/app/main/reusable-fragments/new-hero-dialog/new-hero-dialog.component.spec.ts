@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   ComponentFixture,
   fakeAsync,
+  flush,
   inject,
   TestBed,
   tick,
@@ -22,7 +23,7 @@ import {
 } from '@ngx-translate/core';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MessageService } from 'primeng/api';
-import { AutoComplete } from 'primeng/autocomplete';
+import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { Dropdown } from 'primeng/dropdown';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MockHeroVillanData } from 'src/app/mock.data';
@@ -128,7 +129,7 @@ describe('NewHeroDialogComponent', () => {
     const dropdown: Dropdown = fixture.debugElement.query(
       By.css('p-dropdown')
     ).componentInstance;
-    
+
     dropdown.selectItem(new Event('change'), { id: 2, label: 'Speedster' });
     dropdown.onChange.emit({
       originalEvent: new Event('change'),
@@ -153,9 +154,7 @@ describe('NewHeroDialogComponent', () => {
     const heroForm: FormGroup = component.heroForm;
     const nameControl = heroForm.controls['name'];
     expect(nameControl.value).toBe('THOR');
-    expect(autoCElemnt.inputEL?.nativeElement.value).toBe(
-      'thor'.toUpperCase()
-    );
+    expect(autoCElemnt.inputEL?.nativeElement.value).toBe('thor'.toUpperCase());
   });
 
   it('Should set mode and load hero data if mode is "edit hero"', () => {
@@ -184,31 +183,33 @@ describe('NewHeroDialogComponent', () => {
   it('Should call with the provided hero and array of heroes', inject(
     [HttpClient, MainService],
     async (httpClientTest: HttpClient, mainService: MainService) => {
-    const hero: Hero = {
-      id: '999',
-      name: 'The Mighty Thor 2',
-      description: 'A powerful Norse god of thunder and lightning.',
-      gear: 'Mjolnir, his enchanted hammer',
-      category: 'Melee',
-      rating: 1,
-    };
-    spyOn(mainService, 'validateDuplicatedHero').and.returnValue(true); // You can customize the return value based on your test case
-    const isDuplicate = component.validateDuplicatedHero(hero);
-    expect(isDuplicate).toBe(true); // You can adjust the expectation based on your test case
-  }));
+      const hero: Hero = {
+        id: '999',
+        name: 'The Mighty Thor 2',
+        description: 'A powerful Norse god of thunder and lightning.',
+        gear: 'Mjolnir, his enchanted hammer',
+        category: 'Melee',
+        rating: 1,
+      };
+      spyOn(mainService, 'validateDuplicatedHero').and.returnValue(true); // You can customize the return value based on your test case
+      const isDuplicate = component.validateDuplicatedHero(hero);
+      expect(isDuplicate).toBe(true); // You can adjust the expectation based on your test case
+    }
+  ));
 
   it('Should close the dialog with new hero mode and hero data if not a duplicate', () => {
     component.mode = 'new hero';
-    spyOn(dynamicDialogRef, 'close');
+    spyOn(dynamicDialogRef, 'close').and.callThrough();
     spyOn(component, 'validateDuplicatedHero').and.returnValue(false);
     component.onSaveNewHero();
     expect(dynamicDialogRef.close).toHaveBeenCalledWith({
       mode: 'new hero',
       hero: component.heroForm.value,
     });
-    
   });
-  it('Should set duplicateHeroError if hero is a duplicate', () => {
+  it('Should set duplicateHeroError if hero is a duplicate', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
     component.mode = 'new hero';
     spyOn(component, 'validateDuplicatedHero').and.returnValue(true);
     spyOn(component.heroForm.controls['name'], 'setErrors');
@@ -216,5 +217,33 @@ describe('NewHeroDialogComponent', () => {
     expect(component.heroForm.controls['name'].setErrors).toHaveBeenCalledWith({
       duplicateHeroError: 'Duplicated',
     });
-  });
+    flush();
+  }));
+
+  it('should filter and update arr_autoCompleteOpt based on query  characters', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    const autoCompleteEvent: AutoCompleteCompleteEvent = {
+      query: 'Spider',
+      originalEvent: new Event('input'),
+    };
+    const spy1 = spyOn(component, 'onAutocompleteChange').and.callThrough();
+    component.onAutocompleteChange(autoCompleteEvent);
+    expect(spy1).toHaveBeenCalledWith(autoCompleteEvent);
+    flush();
+  }));
+
+it('should filter and update arr_autoCompleteOpt based on query and special characters', fakeAsync(() => {
+  component.ngOnInit();
+  tick(1000);
+  const autoCompleteEvent2: AutoCompleteCompleteEvent = {
+    query: 'Spider-Man',
+    originalEvent: new Event('input'),
+  };
+  const spy1 = spyOn(component, 'onAutocompleteChange').and.callThrough();
+  component.onAutocompleteChange(autoCompleteEvent2);
+  expect(spy1).toHaveBeenCalledWith(autoCompleteEvent2);
+  component.onAutocompleteChange(autoCompleteEvent2);
+  flush();
+}));
 });

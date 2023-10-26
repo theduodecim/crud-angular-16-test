@@ -117,10 +117,12 @@ describe('Testing "MainService"', () => {
     [HttpClient, MainService],
     async (httpClientTest: HttpClient, mainService: MainService) => {
       var success: any;
-
-      await mainService.deleteHero(1).then((res) => (success = res));
-
-      expect(success).toBeTruthy();
+      var error: any;
+      await mainService.deleteHero(1).then((res) => success = res);
+      await mainService.deleteHero(999).then((res) => error = res);
+      
+    expect(success).toBeTruthy();
+    expect(error).toBeNull();
     }
   ));
 

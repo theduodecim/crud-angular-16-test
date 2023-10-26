@@ -61,14 +61,17 @@ export class MainService {
   deleteHero = async (id: any): Promise<any> => {
     // alternative way used of deleted always thow null in this version of angular in memory return this.httpClient.delete<any>(`${this.baseUrl}/${this.enpointHeros}/`, id)
     var hero;
-    await this.getHerosById(1)
+    var error;
+    try {
+      await this.getHerosById(id)
       .toPromise()
-      .then((data) => (hero = data));
-    if (hero) {
-      return { status: 200, message: 'Deleted hero with ID:', id };
-    } else {
-      return null;
+      .then((data) => (hero = data)).catch(error = error);
+      if (hero)  return { status: 200, message: 'Deleted hero with ID:', id };
+    } catch (error) {
+       if(error) return null;
     }
+   
+   
   };
 
   addHero = (hero: Hero): Observable<any> => {
