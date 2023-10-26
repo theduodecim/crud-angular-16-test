@@ -15,8 +15,6 @@
 - Including The internationalization (i18n) Library For Angular to Support Multiples Languages
 
 #### Unit Testing 
--	Components Created Successfully
--	MainService GET - ADD - UPDATE - DELETE Successfully
 <div align="center">
   <img  src="https://i.ibb.co/q7w7C4S/unit-Testing-Crud.png"  />
 </div>
